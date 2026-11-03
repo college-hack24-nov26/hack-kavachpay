@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KavachSetu – The Ghost Protocol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-green: #0B6B58;
+      --brand-pressed: #095646;
+      --brand-tint: #E6F2EE;
+      --bg: #F4F3EF;
+      --card: #FFFFFF;
+      --card-subtle: #FAF9F6;
+      --border: #E3E1DA;
+      --text-primary: #1C1F1D;
+      --text-secondary: #5F645F;
+      --text-hint: #8A8E88;
+      --success: #1E8E5A;
+      --success-bg: #E3F4EA;
+      --warning: #B7791F;
+      --warning-bg: #FDF3DC;
+      --danger: #C5382F;
+      --danger-bg: #FCE9E7;
+      --info: #2F63B5;
+      --info-bg: #E7EEF9;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #EAE8E2;
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 10px;
+    }
+
+    /* Top bar controls */
+    .top-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 440px;
+      margin-bottom: 12px;
+      padding: 0 4px;
+    }
+    .badge-stage {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #0B6B58;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+    .view-toggle-btn {
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .view-toggle-btn:hover {
+      background: var(--card-subtle);
+      color: var(--brand-green);
+    }
+
+    /* App container (Mobile Mockup Frame) */
+    .app-frame {
+      width: 100%;
+      max-width: 420px;
+      height: 840px;
+      background: var(--bg);
+      border-radius: 36px;
+      box-shadow: 0 25px 60px -15px rgba(0,0,0,0.2), 0 0 0 10px #2D312E;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .app-frame.desktop-mode {
+      max-width: 960px;
+      height: 880px;
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+    }
+
+    /* Mobile Status Bar */
+    .status-bar {
+      height: 38px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      z-index: 10;
+      background: var(--bg);
+      flex-shrink: 0;
+    }
+    .status-notch {
+      width: 120px;
+      height: 18px;
+      background: #2D312E;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Screen Container */
+    .screen-container {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      min-height: 100%;
+      padding: 20px;
+    }
+    .screen.active {
+      display: flex;
+    }
+
+    /* App Header */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      flex-shrink: 0;
+    }
+    .brand-logo-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-icon-sq {
+      width: 32px;
+      height: 32px;
+      background: var(--brand-green);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .brand-title-wrap h1 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+    .brand-title-wrap p {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--brand-green);
+    }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      height: 64px;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-shrink: 0;
+      z-index: 20;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 12px;
+      transition: all 0.2s;
+      border: none;
+      background: transparent;
+    }
+    .nav-item.active {
+      color: var(--brand-green);
+      font-weight: 700;
+      background: var(--brand-tint);
+    }
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 14px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .card-clickable {
+      cursor: pointer;
+    }
+    .card-clickable:hover {
+      border-color: #C7C5BD;
+      transform: translateY(-1px);
+    }
+
+    /* Buttons */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 48px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.05s;
+      border: none;
+      text-decoration: none;
+    }
+    .btn:active {
+      transform: scale(0.985);
+    }
+    .btn-primary {
+      background: var(--brand-green);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--brand-pressed);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--brand-green);
+      border: 1.5px solid var(--brand-green);
+    }
+    .btn-secondary:hover {
+      background: var(--brand-tint);
+    }
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border: 1.5px solid var(--danger);
+    }
+    .btn-danger:hover {
+      background: var(--danger-bg);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 20px;
+      line-height: 1.2;
+    }
+    .badge-success {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid rgba(30, 142, 90, 0.2);
+    }
+    .badge-warning {
+      background: var(--warning-bg);
+      color: var(--warning);
+      border: 1px solid rgba(183, 121, 31, 0.2);
+    }
+    .badge-info {
+      background: var(--info-bg);
+      color: var(--info);
+      border: 1px solid rgba(47, 99, 181, 0.2);
+    }
+    .badge-neutral {
+      background: var(--card-subtle);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    /* Hero Vault Card */
+    .vault-hero {
+      background: linear-gradient(135deg, #0B6B58 0%, #095646 100%);
+      color: white;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 24px -6px rgba(11, 107, 88, 0.35);
+    }
+    .vault-hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .vault-hero-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      opacity: 0.9;
+    }
+    .vault-stats-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .stat-col {
+      flex: 1;
+    }
+    .stat-col .stat-label {
+      font-size: 11px;
+      opacity: 0.8;
+      margin-bottom: 2px;
+    }
+    .stat-col .stat-num {
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .stat-divider {
+      width: 1px;
+      height: 40px;
+      background: rgba(255,255,255,0.2);
+      margin: 0 16px;
+    }
+    .hero-btn {
+      background: rgba(255,255,255,0.15);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    /* Form Fields */
+    .input-group {
+      margin-bottom: 16px;
+    }
+    .input-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .input-field-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-field {
+      width: 100%;
+      height: 46px;
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0 14px;
+      font-size: 14px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border 0.2s;
+    }
+    .input-field:focus {
+      border-color: var(--brand-green);
+      background: white;
+    }
+    .input-toggle-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Filter pills */
+    .filter-pills-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 14px;
+    }
+    .filter-pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .filter-pill.active {
+      background: var(--brand-green);
+      color: white;
+      border-color: var(--brand-green);
+    }
+
+    /* Helper Banner */
+    .info-banner {
+      background: var(--card-subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    .info-banner.warning {
+      background: var(--warning-bg);
+      border-color: rgba(183, 121, 31, 0.3);
+      color: var(--text-primary);
+    }
+    .info-banner.tint {
+      background: var(--brand-tint);
+      border-color: rgba(11, 107, 88, 0.2);
+      color: var(--brand-pressed);
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar controls -->
+  <div class="top-toolbar">
+    <span class="badge-stage">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+      STAGE 1 VERIFIED • FASTAPI & SQLALCHEMY
+    </span>
+    <button class="view-toggle-btn" id="toggleFrameBtn" onclick="toggleDesktopView()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>Toggle View</span>
+    </button>
+  </div>
+
+  <!-- Mobile Mockup Frame -->
+  <div class="app-frame" id="appFrame">
+    <div class="status-notch"></div>
+    <div class="status-bar">
+      <span>09:41</span>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 18.25A11.95 11.95 0 0 1 1.05 12C1.05 5.95 5.95 1.05 12 1.05s10.95 4.9 10.95 10.95c0 2.33-.72 4.49-1.95 6.27l-.62-.62A9.97 9.97 0 0 0 21 12c0-4.97-4.03-9-9-9z"/></svg>
+        <span>5G</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="7" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="4" y="9" width="10" height="7"/><rect x="21" y="10" width="2" height="5" rx="1"/></svg>
+      </div>
+    </div>
+
+    <div class="screen-container">
+
+      <!-- ================= 1. SPLASH / WELCOME SCREEN ================= -->
+      <div class="screen active" id="screenSplash">
+        <div style="flex:1;"></div>
+        <div style="width:64px; height:64px; background:var(--brand-green); border-radius:18px; display:flex; align-items:center; justify-content:center; color:white; margin-bottom:24px; box-shadow:0 8px 20px rgba(11,107,88,0.25);">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <h1 style="font-size:28px; font-weight:700;">KavachSetu</h1>
+          <span style="background:var(--brand-tint); color:var(--brand-green); font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px;">STAGE 1</span>
+        </div>
+        <div style="color:var(--brand-green); font-size:11px; font-weight:700; letter-spacing:1.8px; margin-bottom:14px;">THE GHOST PROTOCOL</div>
+        <h2 style="font-size:20px; font-weight:600; margin-bottom:10px; color:var(--text-primary);">Prove, Don't Share.</h2>
+        <p style="font-size:14px; color:var(--text-secondary); line-height:1.5; margin-bottom:24px;">
+          Privacy-first digital trust and financial verification platform. Prove income predicates and KYC compliance without disclosing raw bank statements.
+        </p>
+
+        <div class="info-banner" style="margin-bottom:28px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--brand-green)" style="flex-shrink:0;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          <div>
+            <strong>Decoupled Ghost-Vault Storage</strong><br>
+            Raw credentials stay safe. Built on bcrypt hashing and decoupled client metadata.
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="showScreen('screenLogin')" style="margin-bottom:12px;">Get Started</button>
+        <button class="btn btn-secondary" onclick="showScreen('screenLogin')">Sign In to Ghost-Vault</button>
+        <div style="height:10px;"></div>
+      </div>
+
+      <!-- ================= 2. LOGIN SCREEN ================= -->
+      <div class="screen" id="screenLogin">
+        <div class="app-header">
+          <button onclick="showScreen('screenSplash')" style="background:none; border:none; cursor:pointer; color:var(--text-primary);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <div style="font-size:14px; font-weight:600;">Sign In</div>
+          <div style="width:22px;"></div>
+        </div>
+
+        <h2 style="font-size:24px; font-weight:700; margin-bottom:6px;">Access Ghost-Vault</h2>
+        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">
+          Enter your credentials to unlock your privacy-preserved credentials.
+        </p>
+
+        <!-- Demo Autofill Pill -->
+        <div class="info-banner tint" style="align-items:center; justify-content:space-between; margin-bottom:20px;">
+          <div>
+            <strong>Demo User: Aarav Mehta</strong><br>
+            <span style="font-size:11px;">user@kavachsetu.demo</span>
+          </div>
+          <button onclick="autofillDemoUser()" style="background:var(--brand-green); color:white; border:none; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer;">Autofill</button>
+        </div>
+
+        <div id="loginErrorBox" style="display:none;" class="info-banner warning">
+          <span id="loginErrorText"></span>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+          <div class="input-group">
+            <label class="input-label">Email Address</label>
+            <div class="input-field-wrap">
+              <input type="email" id="loginEmail" class="input-field" placeholder="user@kavachsetu.demo" required>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Password</label>
+            <div class="input-field-wrap">
+              <input type="password" id="loginPassword" class="input-field" placeholder="Enter password" required>
+              <button type="button" class="input-toggle-btn" onclick="togglePasswordVisibility()">Show</button>
+            </div>
+          </div>
+
+          <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="margin-top:10px; margin-bottom:16px;">
+            Sign In to Ghost-Vault
+          </button>
+        </form>
+
+        <p style="text-align:center; font-size:11px; color:var(--text-hint); margin-top:auto;">
+          Protected by Bcrypt key derivation with 12 adaptive rounds.<br>Session keys verified via HMAC-SHA256.
+        </p>
+      </div>
+
+      <!-- ================= 3. DASHBOARD SCREEN ================= -->
+      <div class="screen" id="screenDashboard">
+        <div class="app-header">
+          <div class="brand-logo-row">
+            <div class="brand-icon-sq">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            </div>
+            <div class="brand-title-wrap">
+              <h1>KavachSetu</h1>
+              <p>THE GHOST PROTOCOL</p>
+            </div>
+          </div>
+          <button onclick="refreshData()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </button>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <div style="font-size:13px; color:var(--text-secondary);">Welcome back,</div>
+          <div style="font-size:22px; font-weight:700;" id="dashGreetingName">Aarav Mehta</div>
+        </div>
+
+        <!-- Ghost-Vault Hero Card -->
+        <div class="vault-hero">
+          <div class="vault-hero-header">
+            <span class="vault-hero-tag">GHOST-VAULT OVERVIEW</span>
+            <span class="badge" style="background:rgba(255,255,255,0.2); color:white; border:none;">ACTIVE & SECURE</span>
+          </div>
+          <div class="vault-stats-row">
+            <div class="stat-col">
+              <div class="stat-label">Total Credentials</div>
+              <div class="stat-num" id="dashTotalCreds">3</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-col">
+              <div class="stat-label">Valid & Ready</div>
+              <div class="stat-num" id="dashValidCreds">3</div>
+            </div>
+          </div>
+          <div class="hero-btn" onclick="navigateToTab('vault')">
+            <span>Manage All Vault Credentials</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+
+        <!-- Credential Previews -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h3 style="font-size:15px; font-weight:600;">Vault Credentials</h3>
+          <button onclick="navigateToTab('vault')" style="background:none; border:none; color:var(--brand-green); font-size:12px; font-weight:600; cursor:pointer;">View All</button>
+        </div>
+        <div id="dashCredentialList"></div>
+
+        <!-- Security Architecture Overview (Honest & Real) -->
+        <h3 style="font-size:15px; font-weight:600; margin:16px 0 10px 0;">Security Overview</h3>
+        <div class="card">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+            <div style="width:32px; height:32px; background:var(--brand-tint); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--brand-green);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:13px; font-weight:600;">Decoupled Protection</div>
+              <div style="font-size:11px; color:var(--text-secondary);">Zero raw PII or statements sent to network</div>
+            </div>
+            <span class="badge badge-success">ACTIVE</span>
+          </div>
+          <div style="border-top:1px solid var(--border); padding-top:10px; display:flex; flex-direction:column; gap:6px; font-size:12px;">
+            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Key Derivation</span><span style="font-weight:600;">Bcrypt 12 Rounds + Salt</span></div>
+            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Storage Architecture</span><span style="font-weight:600;">Decoupled Client Metadata</span></div>
+            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Session Protocol</span><span style="font-weight:600;">HMAC-SHA256 Token</span></div>
+          </div>
+        </div>
+
+        <!-- Recent Activity Previews -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin:16px 0 10px 0;">
+          <h3 style="font-size:15px; font-weight:600;">Recent Activity</h3>
+          <button onclick="navigateToTab('activity')" style="background:none; border:none; color:var(--brand-green); font-size:12px; font-weight:600; cursor:pointer;">All Events</button>
+        </div>
+        <div id="dashActivityList"></div>
+      </div>
+
+      <!-- ================= 4. GHOST-VAULT SCREEN ================= -->
+      <div class="screen" id="screenVault">
+        <div class="app-header">
+          <h2 style="font-size:20px; font-weight:700;">Ghost-Vault</h2>
+          <button onclick="loadVaultCredentials()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </button>
+        </div>
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">
+          Decoupled credentials for zero-knowledge predicate proofing. Select any credential to view verified attributes.
+        </p>
+
+        <!-- Category Filter Pills -->
+        <div class="filter-pills-row">
+          <button class="filter-pill active" onclick="filterVault('ALL', this)">All (3)</button>
+          <button class="filter-pill" onclick="filterVault('IDENTITY', this)">Identity (1)</button>
+          <button class="filter-pill" onclick="filterVault('KYC', this)">KYC (1)</button>
+          <button class="filter-pill" onclick="filterVault('INCOME', this)">Income (1)</button>
+        </div>
+
+        <div id="vaultCardsContainer"></div>
+      </div>
+
+      <!-- ================= 5. CREDENTIAL DETAILS SCREEN ================= -->
+      <div class="screen" id="screenCredentialDetail">
+        <div class="app-header">
+          <button onclick="navigateToTab('vault')" style="background:none; border:none; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; gap:4px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span style="font-size:14px; font-weight:600;">Vault</span>
+          </button>
+          <div style="font-size:14px; font-weight:600;">Credential Details</div>
+          <div style="width:40px;"></div>
+        </div>
+
+        <div id="credentialDetailContent"></div>
+      </div>
+
+      <!-- ================= 6. ACTIVITY SCREEN ================= -->
+      <div class="screen" id="screenActivity">
+        <div class="app-header">
+          <h2 style="font-size:20px; font-weight:700;">Activity History</h2>
+          <button onclick="loadActivityLog()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </button>
+        </div>
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:14px;">
+          Immutable local record of all logins and credential access events.
+        </p>
+
+        <div id="activityContainer"></div>
+      </div>
+
+      <!-- ================= 7. SETTINGS SCREEN ================= -->
+      <div class="screen" id="screenSettings">
+        <div class="app-header">
+          <h2 style="font-size:20px; font-weight:700;">Settings & Security</h2>
+        </div>
+
+        <!-- Profile card -->
+        <div class="card" style="display:flex; align-items:center; gap:14px;">
+          <div style="width:52px; height:52px; background:var(--brand-green); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:20px; font-weight:700;">
+            A
+          </div>
+          <div>
+            <div style="font-size:16px; font-weight:700;" id="settingsUserName">Aarav Mehta</div>
+            <div style="font-size:12px; color:var(--text-secondary);" id="settingsUserEmail">user@kavachsetu.demo</div>
+            <div style="margin-top:4px;"><span class="badge badge-neutral mono" id="settingsUserCode">ID: KVS-001</span></div>
+          </div>
+        </div>
+
+        <h3 style="font-size:14px; font-weight:600; margin:16px 0 8px 0;">Account Information</h3>
+        <div class="card" style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
+          <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Phone (Masked)</span><span style="font-weight:600;">+91 ••••• ••421</span></div>
+          <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Framework Tier</span><span style="font-weight:600;">Stage 1 Evaluation</span></div>
+          <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Custody Mode</span><span style="font-weight:600;">Self-Custodial</span></div>
+        </div>
+
+        <h3 style="font-size:14px; font-weight:600; margin:16px 0 8px 0;">Security Guarantees</h3>
+        <div class="card" style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
+          <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Credential Hashing</span><span class="badge badge-success">Bcrypt (12 Rounds)</span></div>
+          <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Session Integrity</span><span class="badge badge-success">HMAC-SHA256 Token</span></div>
+          <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Data Protection Mode</span><span class="badge badge-info">Zero Raw Leakage</span></div>
+        </div>
+
+        <!-- Synthetic Disclaimer -->
+        <div class="info-banner warning" style="margin-top:8px;">
+          <div>
+            <strong>Stage 1 Synthetic Testing Notice</strong><br>
+            All credentials represent synthetic demo data. ZK proofs, bank integrations and Hyperledger ledgers are scheduled for future stages.
+          </div>
+        </div>
+
+        <button class="btn btn-danger" onclick="handleLogout()" style="margin-top:20px; margin-bottom:24px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          Sign Out of Ghost-Vault
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav" id="bottomNav" style="display:none;">
+      <button class="nav-item active" id="navHome" onclick="navigateToTab('dashboard')">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" id="navVault" onclick="navigateToTab('vault')">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        <span>Ghost-Vault</span>
+      </button>
+      <button class="nav-item" id="navActivity" onclick="navigateToTab('activity')">
+        <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+        <span>Activity</span>
+      </button>
+      <button class="nav-item" id="navSettings" onclick="navigateToTab('settings')">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+        <span>Settings</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // State
+    let authToken = localStorage.getItem('kavach_token') || null;
+    let currentUser = JSON.parse(localStorage.getItem('kavach_user') || 'null');
+    let allCredentials = [];
+    let currentCategoryFilter = 'ALL';
+
+    function toggleDesktopView() {
+      const frame = document.getElementById('appFrame');
+      frame.classList.toggle('desktop-mode');
+    }
+
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(screenId);
+      if (target) target.classList.add('active');
+
+      const bottomNav = document.getElementById('bottomNav');
+      if (screenId === 'screenSplash' || screenId === 'screenLogin') {
+        bottomNav.style.display = 'none';
+      } else {
+        bottomNav.style.display = 'flex';
+      }
+    }
+
+    function navigateToTab(tab) {
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      if (tab === 'dashboard') {
+        document.getElementById('navHome').classList.add('active');
+        showScreen('screenDashboard');
+        loadDashboard();
+      } else if (tab === 'vault') {
+        document.getElementById('navVault').classList.add('active');
+        showScreen('screenVault');
+        loadVaultCredentials();
+      } else if (tab === 'activity') {
+        document.getElementById('navActivity').classList.add('active');
+        showScreen('screenActivity');
+        loadActivityLog();
+      } else if (tab === 'settings') {
+        document.getElementById('navSettings').classList.add('active');
+        showScreen('screenSettings');
+        if (currentUser) {
+          document.getElementById('settingsUserName').textContent = currentUser.full_name;
+          document.getElementById('settingsUserEmail').textContent = currentUser.email;
+          document.getElementById('settingsUserCode').textContent = 'ID: ' + currentUser.user_code;
+        }
+      }
+    }
+
+    function autofillDemoUser() {
+      document.getElementById('loginEmail').value = 'user@kavachsetu.demo';
+      document.getElementById('loginPassword').value = 'GhostProtocol@2026';
+    }
+
+    function togglePasswordVisibility() {
+      const input = document.getElementById('loginPassword');
+      if (input.type === 'password') {
+        input.type = 'text';
+      } else {
+        input.type = 'password';
+      }
+    }
+
+    async function handleLoginSubmit(event) {
+      event.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const errBox = document.getElementById('loginErrorBox');
+      const errText = document.getElementById('loginErrorText');
+      const submitBtn = document.getElementById('loginSubmitBtn');
+
+      errBox.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Verifying with Ghost-Vault...';
+
+      try {
+        const res = await fetch('/api/v1/auth/login', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({email, password})
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.detail || 'Authentication failed');
+        }
+
+        authToken = data.access_token;
+        currentUser = data.user;
+        localStorage.setItem('kavach_token', authToken);
+        localStorage.setItem('kavach_user', JSON.stringify(currentUser));
+
+        navigateToTab('dashboard');
+      } catch (err) {
+        errBox.style.display = 'flex';
+        errText.textContent = err.message;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign In to Ghost-Vault';
+      }
+    }
+
+    async function handleLogout() {
+      if (!confirm('Are you sure you want to sign out of Ghost-Vault?')) return;
+      try {
+        if (authToken) {
+          await fetch('/api/v1/auth/logout', {
+            method: 'POST',
+            headers: {'Authorization': 'Bearer ' + authToken}
+          });
+        }
+      } catch (_) {}
+      authToken = null;
+      currentUser = null;
+      localStorage.removeItem('kavach_token');
+      localStorage.removeItem('kavach_user');
+      showScreen('screenLogin');
+    }
+
+    async function loadDashboard() {
+      if (!authToken) {
+        showScreen('screenLogin');
+        return;
+      }
+      try {
+        const res = await fetch('/api/v1/dashboard/summary', {
+          headers: {'Authorization': 'Bearer ' + authToken}
+        });
+        if (res.status === 401) {
+          handleLogout();
+          return;
+        }
+        const data = await res.json();
+        document.getElementById('dashGreetingName').textContent = data.user.full_name;
+        document.getElementById('dashTotalCreds').textContent = data.total_credentials;
+        document.getElementById('dashValidCreds').textContent = data.valid_credentials;
+
+        // Render recent credentials
+        const listEl = document.getElementById('dashCredentialList');
+        listEl.innerHTML = data.recent_credentials.map(c => renderCredentialCardHtml(c)).join('');
+
+        // Render recent activities
+        const actEl = document.getElementById('dashActivityList');
+        actEl.innerHTML = data.recent_activities.map(a => `
+          <div class="card" style="padding:12px; margin-bottom:8px; display:flex; align-items:center; gap:10px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--brand-green)"><circle cx="12" cy="12" r="8"/></svg>
+            <div style="flex:1;">
+              <div style="font-size:13px; font-weight:600;">${a.title}</div>
+              <div style="font-size:11px; color:var(--text-secondary);">${a.timestamp}</div>
+            </div>
+            <span class="badge badge-neutral">${a.action_type}</span>
+          </div>
+        `).join('');
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadVaultCredentials() {
+      if (!authToken) return;
+      try {
+        const res = await fetch('/api/v1/vault/credentials', {
+          headers: {'Authorization': 'Bearer ' + authToken}
+        });
+        allCredentials = await res.json();
+        applyVaultFilter();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function filterVault(category, btn) {
+      currentCategoryFilter = category;
+      document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyVaultFilter();
+    }
+
+    function applyVaultFilter() {
+      const container = document.getElementById('vaultCardsContainer');
+      const filtered = currentCategoryFilter === 'ALL'
+        ? allCredentials
+        : allCredentials.filter(c => c.category === currentCategoryFilter);
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="card" style="text-align:center; padding:30px; color:var(--text-secondary);">No credentials in this category.</div>';
+        return;
+      }
+      container.innerHTML = filtered.map(c => renderCredentialCardHtml(c)).join('');
+    }
+
+    function renderCredentialCardHtml(c) {
+      let icon = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>';
+      if (c.category === 'INCOME') {
+        icon = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>';
+      } else if (c.category === 'IDENTITY') {
+        icon = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5S9.5 10.38 9.5 9s1.12-2.5 2.5-2.5zM4 17.5c0-2.33 4-3.5 8-3.5s8 1.17 8 3.5V18H4v-.5z"/></svg>';
+      }
+
+      return `
+        <div class="card card-clickable" onclick="openCredentialDetail('${c.id}')">
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+            <div style="width:40px; height:40px; background:var(--brand-tint); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--brand-green);">
+              ${icon}
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:15px; font-weight:700;">${c.title}</div>
+              <div style="font-size:11px; color:var(--text-secondary);">${c.issuer}</div>
+            </div>
+            <span class="badge badge-success">${c.status}</span>
+          </div>
+          <div style="border-top:1px solid var(--border); padding-top:10px; display:flex; justify-content:space-between; font-size:11px;">
+            <div>
+              <span style="color:var(--text-hint);">CREDENTIAL ID:</span>
+              <span class="mono" style="font-weight:600; margin-left:4px;">${c.id}</span>
+            </div>
+            <div>
+              <span style="color:var(--text-hint);">VALID THRU:</span>
+              <span style="font-weight:600; margin-left:4px;">${c.expiry_date}</span>
+            </div>
+          </div>
+          ${c.is_synthetic ? `
+            <div style="margin-top:8px; background:var(--card-subtle); padding:4px 8px; border-radius:6px; font-size:10px; color:var(--text-secondary); display:flex; align-items:center; gap:4px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              Synthetic Demo Credential • Non-Governmental
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    async function openCredentialDetail(id) {
+      if (!authToken) return;
+      try {
+        const res = await fetch('/api/v1/vault/credentials/' + id, {
+          headers: {'Authorization': 'Bearer ' + authToken}
+        });
+        const cred = await res.json();
+
+        let safeAttrsHtml = '';
+        if (cred.safe_attributes) {
+          safeAttrsHtml = Object.entries(cred.safe_attributes).map(([k, v]) => `
+            <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); font-size:13px;">
+              <span style="color:var(--text-secondary); text-transform:capitalize;">${k.replace(/_/g, ' ')}</span>
+              <span style="font-weight:700; color:var(--brand-green);">${v}</span>
+            </div>
+          `).join('');
+        }
+
+        const detailHtml = `
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <span class="badge badge-info">${cred.category}</span>
+              <span class="badge badge-success">${cred.status}</span>
+            </div>
+            <h2 style="font-size:20px; font-weight:700; margin-bottom:4px;">${cred.title}</h2>
+            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">Issued by ${cred.issuer}</div>
+            <div style="border-top:1px solid var(--border); padding-top:10px; display:flex; flex-direction:column; gap:8px; font-size:12px;">
+              <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Credential ID</span><span class="mono" style="font-weight:600;">${cred.id}</span></div>
+              <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Issue Date</span><span style="font-weight:600;">${cred.issue_date}</span></div>
+              <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Expiry Date</span><span style="font-weight:600;">${cred.expiry_date}</span></div>
+            </div>
+          </div>
+
+          <div class="info-banner warning" style="margin-bottom:16px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--warning)" style="flex-shrink:0;"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+            <div>
+              <strong>Synthetic Demo Credential</strong><br>
+              ${cred.privacy_notice}
+            </div>
+          </div>
+
+          <h3 style="font-size:14px; font-weight:600; margin-bottom:8px;">Zero-Exposure Verified Attributes</h3>
+          <div class="card" style="margin-bottom:16px;">
+            ${safeAttrsHtml}
+          </div>
+
+          <h3 style="font-size:14px; font-weight:600; margin-bottom:8px;">Cryptographic Fingerprint</h3>
+          <div class="card" style="background:var(--card-subtle);">
+            <div style="font-size:11px; color:var(--text-secondary); margin-bottom:4px;">SHA-256 Digest Signature</div>
+            <div class="mono" style="font-size:11px; word-break:break-all; color:var(--text-primary);">${cred.verification_hash || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}</div>
+          </div>
+        `;
+
+        document.getElementById('credentialDetailContent').innerHTML = detailHtml;
+        showScreen('screenCredentialDetail');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadActivityLog() {
+      if (!authToken) return;
+      try {
+        const res = await fetch('/api/v1/activity', {
+          headers: {'Authorization': 'Bearer ' + authToken}
+        });
+        const activities = await res.json();
+        const container = document.getElementById('activityContainer');
+
+        if (activities.length === 0) {
+          container.innerHTML = '<div class="card" style="text-align:center; padding:30px; color:var(--text-secondary);">No activities recorded.</div>';
+          return;
+        }
+
+        container.innerHTML = activities.map(a => `
+          <div class="card" style="margin-bottom:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-size:14px; font-weight:700;">${a.title}</span>
+              <span class="badge ${a.action_type === 'LOGIN' ? 'badge-success' : a.action_type === 'VIEW_CREDENTIAL' ? 'badge-info' : 'badge-neutral'}">${a.action_type}</span>
+            </div>
+            ${a.description ? `<div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px;">${a.description}</div>` : ''}
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-hint);">
+              <span>${a.timestamp}</span>
+              <span class="mono">${a.ip_masked}</span>
+            </div>
+          </div>
+        `).join('');
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function refreshData() {
+      loadDashboard();
+    }
+
+    // Auto-init
+    if (authToken && currentUser) {
+      navigateToTab('dashboard');
+    } else {
+      showScreen('screenSplash');
+    }
+  </script>
+</body>
+</html>
+
