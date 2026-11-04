@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KavachSetu – The Ghost Protocol</title>
+  <title>KavachSetu – The Ghost Protocol | Production Personal Digital Identity & Privacy Wallet</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,10 +12,14 @@
       --brand-green: #0B6B58;
       --brand-pressed: #095646;
       --brand-tint: #E6F2EE;
+      --brand-teal: #0D9488;
+      --brand-teal-light: #CCFBF1;
       --bg: #F4F3EF;
+      --bg-warm: #FAF9F5;
       --card: #FFFFFF;
       --card-subtle: #FAF9F6;
       --border: #E3E1DA;
+      --border-dark: #CDCAC0;
       --text-primary: #1C1F1D;
       --text-secondary: #5F645F;
       --text-hint: #8A8E88;
@@ -29,6 +33,8 @@
       --info-bg: #E7EEF9;
       --radius: 16px;
       --radius-sm: 10px;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+      --shadow-md: 0 6px 20px rgba(0,0,0,0.06);
     }
 
     * {
@@ -40,14 +46,14 @@
     }
 
     body {
-      background-color: #EAE8E2;
+      background-color: #E8E6DF;
       color: var(--text-primary);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px 10px;
+      padding: 16px 8px;
     }
 
     /* Top bar controls */
@@ -56,21 +62,22 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      max-width: 440px;
+      max-width: 1140px;
       margin-bottom: 12px;
-      padding: 0 4px;
+      padding: 0 6px;
     }
     .badge-stage {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: #0B6B58;
+      background: var(--brand-green);
       color: white;
       font-size: 11px;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 20px;
       letter-spacing: 0.5px;
+      box-shadow: 0 2px 6px rgba(11,107,88,0.2);
     }
     .view-toggle-btn {
       background: white;
@@ -78,8 +85,8 @@
       color: var(--text-secondary);
       font-size: 12px;
       font-weight: 600;
-      padding: 5px 12px;
-      border-radius: 8px;
+      padding: 6px 14px;
+      border-radius: 10px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -89,28 +96,30 @@
     .view-toggle-btn:hover {
       background: var(--card-subtle);
       color: var(--brand-green);
+      border-color: var(--brand-green);
     }
 
-    /* App container (Mobile Mockup Frame) */
+    /* App container (Mobile Mockup Frame & Desktop Mode) */
     .app-frame {
       width: 100%;
-      max-width: 420px;
-      height: 840px;
+      max-width: 440px;
+      height: 870px;
       background: var(--bg);
       border-radius: 36px;
-      box-shadow: 0 25px 60px -15px rgba(0,0,0,0.2), 0 0 0 10px #2D312E;
+      box-shadow: 0 25px 60px -15px rgba(0,0,0,0.22), 0 0 0 10px #2D312E;
       position: relative;
       display: flex;
       flex-direction: column;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.4);
+      transition: max-width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
     }
 
     .app-frame.desktop-mode {
-      max-width: 960px;
-      height: 880px;
-      border-radius: 18px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+      max-width: 1140px;
+      height: 900px;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.12), 0 0 0 2px var(--border);
     }
 
     /* Mobile Status Bar */
@@ -127,6 +136,9 @@
       background: var(--bg);
       flex-shrink: 0;
     }
+    .desktop-mode .status-bar {
+      display: none;
+    }
     .status-notch {
       width: 120px;
       height: 18px;
@@ -138,157 +150,260 @@
       left: 50%;
       transform: translateX(-50%);
     }
+    .desktop-mode .status-notch {
+      display: none;
+    }
 
-    /* Screen Container */
+    /* Top Navigation Header */
+    .app-top-header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 20;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-logo-icon {
+      width: 34px;
+      height: 34px;
+      background: var(--brand-green);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 4px 10px rgba(11,107,88,0.25);
+    }
+    .brand-text-col h1 {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .brand-text-col p {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: var(--brand-green);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sec-shield-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--brand-tint);
+      color: var(--brand-green);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(11,107,88,0.2);
+      cursor: pointer;
+    }
+    .icon-action-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.15s;
+    }
+    .icon-action-btn:hover {
+      background: var(--card-subtle);
+      color: var(--brand-green);
+    }
+    .notif-badge-dot {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 8px;
+      height: 8px;
+      background: var(--danger);
+      border-radius: 50%;
+      border: 1px solid white;
+    }
+
+    /* Sub-nav Tab Bar for Ghost-Vault Sections */
+    .vault-subnav-bar {
+      display: flex;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      padding: 0 16px;
+      gap: 4px;
+      flex-shrink: 0;
+      scrollbar-width: none;
+    }
+    .vault-subnav-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .subnav-btn {
+      background: none;
+      border: none;
+      padding: 12px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      white-space: nowrap;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .subnav-btn:hover {
+      color: var(--brand-green);
+    }
+    .subnav-btn.active {
+      color: var(--brand-green);
+    }
+    .subnav-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10px;
+      right: 10px;
+      height: 2.5px;
+      background: var(--brand-green);
+      border-radius: 3px 3px 0 0;
+    }
+
+    /* Screen & Layout Container */
     .screen-container {
       flex: 1;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       position: relative;
+      background: var(--bg);
     }
-
     .screen {
       display: none;
-      flex-direction: column;
-      min-height: 100%;
       padding: 20px;
+      flex-direction: column;
     }
     .screen.active {
       display: flex;
     }
 
-    /* App Header */
-    .app-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 16px;
-      flex-shrink: 0;
-    }
-    .brand-logo-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .brand-icon-sq {
-      width: 32px;
-      height: 32px;
-      background: var(--brand-green);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-    }
-    .brand-title-wrap h1 {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.1;
-    }
-    .brand-title-wrap p {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      color: var(--brand-green);
-    }
-
-    /* Bottom Navigation Bar */
-    .bottom-nav {
-      height: 64px;
-      background: var(--card);
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      flex-shrink: 0;
-      z-index: 20;
-    }
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      color: var(--text-secondary);
-      font-size: 11px;
-      font-weight: 500;
-      cursor: pointer;
-      padding: 6px 12px;
-      border-radius: 12px;
-      transition: all 0.2s;
-      border: none;
-      background: transparent;
-    }
-    .nav-item.active {
-      color: var(--brand-green);
-      font-weight: 700;
-      background: var(--brand-tint);
-    }
-    .nav-item svg {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-    }
-
-    /* Cards */
+    /* Common Card & Hero Styling */
     .card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 16px;
+      box-shadow: var(--shadow-sm);
       margin-bottom: 14px;
-      transition: transform 0.15s, box-shadow 0.15s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .card-clickable {
-      cursor: pointer;
+    .card:hover {
+      border-color: var(--border-dark);
     }
-    .card-clickable:hover {
-      border-color: #C7C5BD;
-      transform: translateY(-1px);
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .card-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
     }
 
-    /* Buttons */
-    .btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      height: 48px;
-      border-radius: 14px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.05s;
-      border: none;
-      text-decoration: none;
-    }
-    .btn:active {
-      transform: scale(0.985);
-    }
-    .btn-primary {
-      background: var(--brand-green);
+    /* Vault Overview Hero Card */
+    .vault-hero {
+      background: linear-gradient(135deg, #0B6B58 0%, #064E3B 100%);
+      border-radius: 18px;
+      padding: 20px;
       color: white;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 25px rgba(11,107,88,0.22);
+      position: relative;
+      overflow: hidden;
     }
-    .btn-primary:hover {
-      background: var(--brand-pressed);
+    .vault-hero::after {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+      border-radius: 50%;
     }
-    .btn-secondary {
-      background: transparent;
-      color: var(--brand-green);
-      border: 1.5px solid var(--brand-green);
+    .vault-hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
     }
-    .btn-secondary:hover {
-      background: var(--brand-tint);
+    .vault-hero-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.85);
     }
-    .btn-danger {
-      background: transparent;
-      color: var(--danger);
-      border: 1.5px solid var(--danger);
+    .vault-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      gap: 12px;
+      margin: 14px 0 18px 0;
     }
-    .btn-danger:hover {
-      background: var(--danger-bg);
+    .metric-col {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 10px 12px;
+      text-align: center;
+    }
+    .metric-num {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .metric-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.8);
+      margin-top: 2px;
+    }
+    .hero-quick-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .hero-action-pill {
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.15s;
+    }
+    .hero-action-pill:hover {
+      background: rgba(255,255,255,0.28);
     }
 
     /* Badges */
@@ -297,142 +412,106 @@
       align-items: center;
       gap: 4px;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       padding: 3px 8px;
-      border-radius: 20px;
-      line-height: 1.2;
+      border-radius: 6px;
+      letter-spacing: 0.3px;
     }
-    .badge-success {
-      background: var(--success-bg);
-      color: var(--success);
-      border: 1px solid rgba(30, 142, 90, 0.2);
-    }
-    .badge-warning {
-      background: var(--warning-bg);
-      color: var(--warning);
-      border: 1px solid rgba(183, 121, 31, 0.2);
-    }
-    .badge-info {
-      background: var(--info-bg);
-      color: var(--info);
-      border: 1px solid rgba(47, 99, 181, 0.2);
-    }
-    .badge-neutral {
-      background: var(--card-subtle);
-      color: var(--text-secondary);
-      border: 1px solid var(--border);
-    }
+    .badge-success { background: var(--success-bg); color: var(--success); }
+    .badge-warning { background: var(--warning-bg); color: var(--warning); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger); }
+    .badge-info { background: var(--info-bg); color: var(--info); }
+    .badge-neutral { background: #ECEAE4; color: var(--text-secondary); }
+    .badge-verified { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
 
-    /* Hero Vault Card */
-    .vault-hero {
-      background: linear-gradient(135deg, #0B6B58 0%, #095646 100%);
-      color: white;
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 24px -6px rgba(11, 107, 88, 0.35);
-    }
-    .vault-hero-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    .vault-hero-tag {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      opacity: 0.9;
-    }
-    .vault-stats-row {
-      display: flex;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    .stat-col {
-      flex: 1;
-    }
-    .stat-col .stat-label {
-      font-size: 11px;
-      opacity: 0.8;
-      margin-bottom: 2px;
-    }
-    .stat-col .stat-num {
-      font-size: 28px;
-      font-weight: 700;
-    }
-    .stat-divider {
-      width: 1px;
-      height: 40px;
-      background: rgba(255,255,255,0.2);
-      margin: 0 16px;
-    }
-    .hero-btn {
-      background: rgba(255,255,255,0.15);
-      color: white;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 12px;
+    /* Buttons */
+    .btn {
+      width: 100%;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
       font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      border: none;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+    .btn-primary {
+      background: var(--brand-green);
+      color: white;
+      box-shadow: 0 4px 12px rgba(11,107,88,0.2);
+    }
+    .btn-primary:hover {
+      background: var(--brand-pressed);
+    }
+    .btn-secondary {
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+    .btn-secondary:hover {
+      background: var(--card-subtle);
+    }
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    .btn-sm {
+      height: 32px;
+      padding: 0 12px;
+      font-size: 12px;
+      border-radius: 8px;
+      width: auto;
     }
 
-    /* Form Fields */
+    /* Form Inputs */
     .input-group {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .input-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 6px;
       display: block;
-    }
-    .input-field-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
     }
     .input-field {
       width: 100%;
-      height: 46px;
-      background: var(--card-subtle);
+      height: 42px;
+      background: white;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 0 14px;
-      font-size: 14px;
+      padding: 0 12px;
+      font-size: 13px;
       color: var(--text-primary);
       outline: none;
       transition: border 0.2s;
     }
     .input-field:focus {
       border-color: var(--brand-green);
-      background: white;
+      box-shadow: 0 0 0 3px rgba(11,107,88,0.1);
     }
-    .input-toggle-btn {
-      position: absolute;
-      right: 12px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--text-secondary);
-      font-size: 12px;
-      font-weight: 600;
+    select.input-field {
+      appearance: auto;
     }
 
-    /* Filter pills */
+    /* Filter pills row */
     .filter-pills-row {
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding-bottom: 4px;
+      padding-bottom: 6px;
       margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+    .filter-pills-row::-webkit-scrollbar {
+      display: none;
     }
     .filter-pill {
-      background: var(--card);
+      background: white;
       border: 1px solid var(--border);
       color: var(--text-secondary);
       font-size: 12px;
@@ -449,356 +528,1022 @@
       border-color: var(--brand-green);
     }
 
-    /* Helper Banner */
-    .info-banner {
-      background: var(--card-subtle);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
+    /* Modal Sheet Overlay */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      backdrop-filter: blur(3px);
+    }
+    .modal-overlay.active {
       display: flex;
-      gap: 10px;
-      font-size: 12px;
-      color: var(--text-secondary);
+    }
+    .modal-card {
+      background: white;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 540px;
+      max-height: 90%;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
     }
-    .info-banner.warning {
-      background: var(--warning-bg);
-      border-color: rgba(183, 121, 31, 0.3);
-      color: var(--text-primary);
+    .modal-title {
+      font-size: 17px;
+      font-weight: 700;
     }
-    .info-banner.tint {
-      background: var(--brand-tint);
-      border-color: rgba(11, 107, 88, 0.2);
-      color: var(--brand-pressed);
+    .modal-close-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
     }
 
+    /* Timeline & Grid */
+    .timeline-item {
+      display: flex;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(227,225,218,0.5);
+    }
+    .timeline-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--brand-tint);
+      color: var(--brand-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
     .mono {
       font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Comparison Box for Selective Disclosure */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 14px 0;
+    }
+    .compare-col {
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12px;
+    }
+    .compare-col.public {
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+    }
+    .compare-col.private {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+    }
+
+    /* Drag & drop upload box */
+    .drop-zone {
+      border: 2px dashed var(--brand-green);
+      border-radius: 14px;
+      padding: 24px 16px;
+      text-align: center;
+      background: var(--brand-tint);
+      cursor: pointer;
+      margin-bottom: 14px;
+      transition: background 0.2s;
+    }
+    .drop-zone:hover {
+      background: #D9EBE5;
+    }
+
+    /* Responsive desktop layout adjustments */
+    @media (min-width: 860px) {
+      .desktop-mode .screen {
+        padding: 24px 32px;
+      }
+      .desktop-mode .cards-two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .desktop-mode .cards-three-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Top bar controls -->
+  <!-- Top toolbar -->
   <div class="top-toolbar">
-    <span class="badge-stage">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-      STAGE 1 VERIFIED • FASTAPI & SQLALCHEMY
-    </span>
-    <button class="view-toggle-btn" id="toggleFrameBtn" onclick="toggleDesktopView()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-      <span>Toggle View</span>
-    </button>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span class="badge-stage">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        KAVACHSETU GHOST PROTOCOL • PRODUCTION VAULT
+      </span>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button class="view-toggle-btn" onclick="toggleDesktopView()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <span id="viewModeLabel">Desktop View</span>
+      </button>
+    </div>
   </div>
 
-  <!-- Mobile Mockup Frame -->
+  <!-- App Container Frame -->
   <div class="app-frame" id="appFrame">
     <div class="status-notch"></div>
     <div class="status-bar">
       <span>09:41</span>
       <div style="display:flex; gap:6px; align-items:center;">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 18.25A11.95 11.95 0 0 1 1.05 12C1.05 5.95 5.95 1.05 12 1.05s10.95 4.9 10.95 10.95c0 2.33-.72 4.49-1.95 6.27l-.62-.62A9.97 9.97 0 0 0 21 12c0-4.97-4.03-9-9-9z"/></svg>
         <span>5G</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="7" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="4" y="9" width="10" height="7"/><rect x="21" y="10" width="2" height="5" rx="1"/></svg>
       </div>
     </div>
 
+    <!-- Top App Header -->
+    <div class="app-top-header" id="appTopHeader" style="display:none;">
+      <div class="brand-wrap">
+        <div class="brand-logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        </div>
+        <div class="brand-text-col">
+          <h1>Ghost-Vault</h1>
+          <p>KAVACHSETU DECOUPLED WALLET</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="sec-shield-pill" onclick="openSecurityModal()" title="Hardware-Isolated AES-GCM Encryption">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+          <span>AES-256-GCM</span>
+        </div>
+        <button class="icon-action-btn" onclick="openNotificationsModal()" title="Notifications">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-badge-dot" id="headerNotifDot" style="display:none;"></span>
+        </button>
+        <button class="icon-action-btn" onclick="refreshAllVaultData()" title="Sync Vault">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Vault Subnav Bar (6 Tabs) -->
+    <div class="vault-subnav-bar" id="vaultSubnav" style="display:none;">
+      <button class="subnav-btn active" id="tabOverview" onclick="switchTab('overview')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Overview
+      </button>
+      <button class="subnav-btn" id="tabDocuments" onclick="switchTab('documents')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Documents
+      </button>
+      <button class="subnav-btn" id="tabZkStudio" onclick="switchTab('zkStudio')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        ZK Studio
+      </button>
+      <button class="subnav-btn" id="tabConsent" onclick="switchTab('consent')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+        Permissions
+      </button>
+      <button class="subnav-btn" id="tabSharing" onclick="switchTab('sharing')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Sharing & QR
+      </button>
+      <button class="subnav-btn" id="tabBlockchain" onclick="switchTab('blockchain')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Fabric Audit
+      </button>
+      <button class="subnav-btn" id="tabProfile" onclick="switchTab('profile')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profile & Security
+      </button>
+    </div>
+
+    <!-- Main Screens Container -->
     <div class="screen-container">
 
-      <!-- ================= 1. SPLASH / WELCOME SCREEN ================= -->
+      <!-- ================= 0. SPLASH SCREEN ================= -->
       <div class="screen active" id="screenSplash">
         <div style="flex:1;"></div>
-        <div style="width:64px; height:64px; background:var(--brand-green); border-radius:18px; display:flex; align-items:center; justify-content:center; color:white; margin-bottom:24px; box-shadow:0 8px 20px rgba(11,107,88,0.25);">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        <div style="width:68px; height:68px; background:var(--brand-green); border-radius:20px; display:flex; align-items:center; justify-content:center; color:white; margin-bottom:24px; box-shadow:0 10px 25px rgba(11,107,88,0.25);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
         </div>
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-          <h1 style="font-size:28px; font-weight:700;">KavachSetu</h1>
-          <span style="background:var(--brand-tint); color:var(--brand-green); font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px;">STAGE 1</span>
-        </div>
-        <div style="color:var(--brand-green); font-size:11px; font-weight:700; letter-spacing:1.8px; margin-bottom:14px;">THE GHOST PROTOCOL</div>
-        <h2 style="font-size:20px; font-weight:600; margin-bottom:10px; color:var(--text-primary);">Prove, Don't Share.</h2>
-        <p style="font-size:14px; color:var(--text-secondary); line-height:1.5; margin-bottom:24px;">
-          Privacy-first digital trust and financial verification platform. Prove income predicates and KYC compliance without disclosing raw bank statements.
+        <h1 style="font-size:30px; font-weight:800; letter-spacing:-0.5px;">KavachSetu – The Ghost Protocol</h1>
+        <div style="color:var(--brand-green); font-size:12px; font-weight:700; letter-spacing:1.5px; margin-bottom:12px;">GHOST-VAULT PRODUCTION WALLET</div>
+        <h2 style="font-size:20px; font-weight:600; margin-bottom:8px; color:var(--text-primary);">Your Digital Identity, Your Control.</h2>
+        <div style="font-size:14px; font-weight:700; color:var(--brand-green); margin-bottom:14px;">Prove, Don't Share.</div>
+        <p style="font-size:14px; color:var(--text-secondary); line-height:1.55; margin-bottom:24px;">
+          Production-grade personal digital identity and privacy wallet. Store credentials encrypted with AES-256-GCM, prove predicates via BN254 ZK-SNARKs, and audit permissions on Hyperledger Fabric.
         </p>
 
-        <div class="info-banner" style="margin-bottom:28px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--brand-green)" style="flex-shrink:0;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-          <div>
-            <strong>Decoupled Ghost-Vault Storage</strong><br>
-            Raw credentials stay safe. Built on bcrypt hashing and decoupled client metadata.
+        <div class="card" style="margin-bottom:24px; background:var(--card-subtle);">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+            <span class="badge badge-success">ACTIVE SECURITY</span>
+            <span style="font-size:12px; font-weight:600;">Hardware-Isolated Decoupled Vault</span>
           </div>
+          <p style="font-size:12px; color:var(--text-secondary);">
+            Raw identity documents never touch external blockchains or third-party servers. Prove without sharing.
+          </p>
         </div>
 
-        <button class="btn btn-primary" onclick="showScreen('screenLogin')" style="margin-bottom:12px;">Get Started</button>
-        <button class="btn btn-secondary" onclick="showScreen('screenLogin')">Sign In to Ghost-Vault</button>
-        <div style="height:10px;"></div>
+        <button class="btn btn-primary" onclick="showScreen('screenLogin')" style="margin-bottom:12px;">Access Ghost-Vault</button>
+        <button class="btn btn-secondary" onclick="autofillAndLogin()">1-Tap Demo Quick Launch</button>
+        <div style="height:20px;"></div>
       </div>
 
-      <!-- ================= 2. LOGIN SCREEN ================= -->
+      <!-- ================= 1. LOGIN SCREEN ================= -->
       <div class="screen" id="screenLogin">
-        <div class="app-header">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
           <button onclick="showScreen('screenSplash')" style="background:none; border:none; cursor:pointer; color:var(--text-primary);">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </button>
-          <div style="font-size:14px; font-weight:600;">Sign In</div>
+          <span style="font-size:14px; font-weight:600;">Sign In</span>
           <div style="width:22px;"></div>
         </div>
 
-        <h2 style="font-size:24px; font-weight:700; margin-bottom:6px;">Access Ghost-Vault</h2>
-        <p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">
-          Enter your credentials to unlock your privacy-preserved credentials.
+        <h2 style="font-size:24px; font-weight:800; margin-bottom:6px;">Unlock Ghost-Vault</h2>
+        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:20px;">
+          Authenticate with your cryptographic credentials to decrypt your wallet.
         </p>
 
-        <!-- Demo Autofill Pill -->
-        <div class="info-banner tint" style="align-items:center; justify-content:space-between; margin-bottom:20px;">
+        <!-- Demo Autofill Box -->
+        <div class="card" style="background:var(--brand-tint); border-color:rgba(11,107,88,0.25); display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
           <div>
-            <strong>Demo User: Aarav Mehta</strong><br>
-            <span style="font-size:11px;">user@kavachsetu.demo</span>
+            <div style="font-size:13px; font-weight:700; color:var(--brand-pressed);">Demo Citizen: Aarav Mehta</div>
+            <div style="font-size:11px; color:var(--text-secondary);">user@kavachsetu.demo • GhostProtocol@2026</div>
           </div>
-          <button onclick="autofillDemoUser()" style="background:var(--brand-green); color:white; border:none; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer;">Autofill</button>
+          <button class="btn btn-primary btn-sm" onclick="autofillDemoCreds()">Autofill</button>
         </div>
 
-        <div id="loginErrorBox" style="display:none;" class="info-banner warning">
-          <span id="loginErrorText"></span>
+        <div id="loginErrorBox" style="display:none; margin-bottom:14px;" class="card" style="background:var(--danger-bg); border-color:var(--danger);">
+          <span id="loginErrorText" style="color:var(--danger); font-size:12px; font-weight:600;"></span>
         </div>
 
-        <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+        <form onsubmit="handleLoginSubmit(event)">
           <div class="input-group">
             <label class="input-label">Email Address</label>
-            <div class="input-field-wrap">
-              <input type="email" id="loginEmail" class="input-field" placeholder="user@kavachsetu.demo" required>
+            <input type="email" id="loginEmail" class="input-field" placeholder="user@kavachsetu.demo" required>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Password</label>
+            <input type="password" id="loginPassword" class="input-field" placeholder="Enter password" required>
+          </div>
+          <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="margin-top:10px;">Sign In to Ghost-Vault</button>
+        </form>
+
+        <p style="text-align:center; font-size:11px; color:var(--text-hint); margin-top:auto; padding-top:20px;">
+          Protected by Bcrypt 12 rounds key derivation • HMAC-SHA256 session integrity.
+        </p>
+      </div>
+
+      <!-- ================= 2. OVERVIEW DASHBOARD SCREEN ================= -->
+      <div class="screen" id="screenOverview">
+        <!-- Welcome Hero -->
+        <div class="vault-hero">
+          <div class="vault-hero-header">
+            <span class="vault-hero-tag">GHOST-VAULT SECURE SUMMARY</span>
+            <span class="badge" style="background:rgba(255,255,255,0.2); color:white;">AES-256-GCM SECURED</span>
+          </div>
+          <h2 style="font-size:22px; font-weight:800; line-height:1.2;">Your Digital Identity, Your Control.</h2>
+          <p style="font-size:12px; color:rgba(255,255,255,0.85); margin-top:4px;">
+            Decoupled self-custodial wallet for <span id="dashCitizenName" style="font-weight:700;">Aarav Mehta</span> (<span id="dashUserCode" class="mono">KVS-001</span>).
+          </p>
+
+          <!-- 5 Core Metrics (Actual Application Data) -->
+          <div class="vault-metrics-grid">
+            <div class="metric-col">
+              <div class="metric-num" id="statTotalDocs">0</div>
+              <div class="metric-label">Total Documents</div>
             </div>
+            <div class="metric-col">
+              <div class="metric-num" id="statVerifiedCreds">0</div>
+              <div class="metric-label">Verified Creds</div>
+            </div>
+            <div class="metric-col">
+              <div class="metric-num" id="statPendingVerif">0</div>
+              <div class="metric-label">Pending Verif</div>
+            </div>
+            <div class="metric-col">
+              <div class="metric-num" id="statActivePerms">0</div>
+              <div class="metric-label">Active Consents</div>
+            </div>
+            <div class="metric-col">
+              <div class="metric-num" id="statUpcomingExp">0</div>
+              <div class="metric-label">Expiring Soon</div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="hero-quick-actions">
+            <div class="hero-action-pill" onclick="openUploadModal()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Document
+            </div>
+            <div class="hero-action-pill" onclick="switchTab('zkStudio')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Generate ZK Proof
+            </div>
+            <div class="hero-action-pill" onclick="switchTab('consent')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/></svg>
+              Manage Permissions
+            </div>
+            <div class="hero-action-pill" onclick="switchTab('blockchain')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/></svg>
+              Audit Explorer
+            </div>
+          </div>
+        </div>
+
+        <div class="cards-two-col">
+          <!-- Documents Preview -->
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <h3 style="font-size:15px; font-weight:700;">Vault Documents</h3>
+              <button onclick="switchTab('documents')" style="background:none; border:none; color:var(--brand-green); font-size:12px; font-weight:600; cursor:pointer;">View All Documents &rarr;</button>
+            </div>
+            <div id="dashDocPreviewList"></div>
+          </div>
+
+          <!-- Verified Credentials Preview -->
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <h3 style="font-size:15px; font-weight:700;">Verified Credentials</h3>
+              <button onclick="switchTab('zkStudio')" style="background:none; border:none; color:var(--brand-green); font-size:12px; font-weight:600; cursor:pointer;">ZK Prover &rarr;</button>
+            </div>
+            <div id="dashCredPreviewList"></div>
+          </div>
+        </div>
+
+        <!-- Recent Activity & Audit Trail -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin:16px 0 10px 0;">
+          <h3 style="font-size:15px; font-weight:700;">Recent Vault Activity</h3>
+          <button onclick="switchTab('blockchain')" style="background:none; border:none; color:var(--brand-green); font-size:12px; font-weight:600; cursor:pointer;">Fabric Ledger &rarr;</button>
+        </div>
+        <div class="card" id="dashActivityContainer"></div>
+      </div>
+
+      <!-- ================= 3. COMPLETE DIGITAL DOCUMENT VAULT ================= -->
+      <div class="screen" id="screenDocuments">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h2 style="font-size:20px; font-weight:800;">Digital Document Vault</h2>
+            <p style="font-size:12px; color:var(--text-secondary);">Encrypted AES-256-GCM storage with OCR intelligence and verification.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="openUploadModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Upload Document
+          </button>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+          <input type="text" id="docSearchInput" class="input-field" placeholder="Search by name, number, or category..." oninput="handleDocSearch()" style="flex:1; min-width:200px;">
+          <select id="docSortSelect" class="input-field" onchange="handleDocFilter()" style="width:140px;">
+            <option value="date_desc">Newest First</option>
+            <option value="date_asc">Oldest First</option>
+            <option value="name_asc">Name A-Z</option>
+            <option value="name_desc">Name Z-A</option>
+          </select>
+          <select id="docStatusSelect" class="input-field" onchange="handleDocFilter()" style="width:160px;">
+            <option value="ALL">All Statuses</option>
+            <option value="ISSUER_VERIFIED">Issuer Verified</option>
+            <option value="DEMO_VERIFIED">Demo Verified</option>
+            <option value="PENDING_VERIFICATION">Pending Verif</option>
+            <option value="UNVERIFIED">Unverified</option>
+            <option value="REJECTED">Rejected</option>
+          </select>
+        </div>
+
+        <!-- 11 Supported Categories Filter Pills -->
+        <div class="filter-pills-row" id="categoryPillsRow">
+          <button class="filter-pill active" onclick="selectDocCategory('ALL', this)">All Categories</button>
+          <button class="filter-pill" onclick="selectDocCategory('Aadhaar Card', this)">Aadhaar Card</button>
+          <button class="filter-pill" onclick="selectDocCategory('PAN Card', this)">PAN Card</button>
+          <button class="filter-pill" onclick="selectDocCategory('Passport', this)">Passport</button>
+          <button class="filter-pill" onclick="selectDocCategory('Driving Licence', this)">Driving Licence</button>
+          <button class="filter-pill" onclick="selectDocCategory('Voter ID', this)">Voter ID</button>
+          <button class="filter-pill" onclick="selectDocCategory('Income Certificate', this)">Income Certificate</button>
+          <button class="filter-pill" onclick="selectDocCategory('Caste Certificate', this)">Caste Certificate</button>
+          <button class="filter-pill" onclick="selectDocCategory('Domicile Certificate', this)">Domicile Certificate</button>
+          <button class="filter-pill" onclick="selectDocCategory('Educational Certificates', this)">Educational</button>
+          <button class="filter-pill" onclick="selectDocCategory('Bank Account Proof', this)">Bank Proof</button>
+          <button class="filter-pill" onclick="selectDocCategory('Other Documents', this)">Other</button>
+        </div>
+
+        <!-- Document Cards List -->
+        <div id="documentsListContainer"></div>
+      </div>
+
+      <!-- ================= 4. ZK PROOF STUDIO & SELECTIVE DISCLOSURE ================= -->
+      <div class="screen" id="screenZkStudio">
+        <div style="margin-bottom:16px;">
+          <h2 style="font-size:20px; font-weight:800;">Zero-Knowledge Proof Studio</h2>
+          <p style="font-size:12px; color:var(--text-secondary);">
+            Generate and verify cryptographic range proofs (BN254 curve). Prove eligibility without disclosing raw bank statements or birth dates.
+          </p>
+        </div>
+
+        <!-- ZK Prover Wizard Card -->
+        <div class="card" style="border-left: 4px solid var(--brand-green);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div style="font-size:15px; font-weight:700;">Prover Engine (BN254 alt_bn128)</div>
+            <span class="badge badge-success">MATHEMATICALLY BOUND</span>
           </div>
 
           <div class="input-group">
-            <label class="input-label">Password</label>
-            <div class="input-field-wrap">
-              <input type="password" id="loginPassword" class="input-field" placeholder="Enter password" required>
-              <button type="button" class="input-toggle-btn" onclick="togglePasswordVisibility()">Show</button>
+            <label class="input-label">1. Select Verified Credential Witness</label>
+            <select id="zkCredSelect" class="input-field" onchange="onZkCredSelected()">
+              <!-- Populated dynamically with valid credentials -->
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">2. Select Predicate Claim to Prove</label>
+            <select id="zkClaimSelect" class="input-field" onchange="onZkClaimSelected()">
+              <option value="AGE_RANGE_PROOF">Age Range Proof (e.g. Citizen Age &ge; 18)</option>
+              <option value="INCOME_PREDICATE_PROOF">Income Predicate Proof (e.g. Monthly Income &ge; ₹25,000)</option>
+              <option value="CREDENTIAL_POSSESSION">Cryptographic Possession Proof (Identity Registration Attestation)</option>
+            </select>
+          </div>
+
+          <div class="input-group" id="zkThresholdGroup">
+            <label class="input-label" id="zkThresholdLabel">3. Predicate Threshold</label>
+            <input type="number" id="zkThresholdInput" class="input-field" value="18">
+          </div>
+
+          <!-- Selective Disclosure Visualization Preview -->
+          <div style="font-size:13px; font-weight:700; margin:14px 0 6px 0;">Selective Disclosure Projection:</div>
+          <div class="compare-grid">
+            <div class="compare-col public">
+              <div style="font-weight:700; color:#065F46; margin-bottom:4px;">&check; Disclosed to Verifier</div>
+              <ul style="padding-left:16px; line-height:1.5;" id="zkPublicDisclosureList">
+                <li>Predicate: Age &ge; 18 Verified</li>
+                <li>BN254 Proof Commitment Hash</li>
+                <li>Fiat-Shamir Nonce</li>
+                <li>Zero PII or birth date shared</li>
+              </ul>
+            </div>
+            <div class="compare-col private">
+              <div style="font-weight:700; color:#991B1B; margin-bottom:4px;">&cross; Remains 100% Private</div>
+              <ul style="padding-left:16px; line-height:1.5;" id="zkPrivateKeptList">
+                <li>Exact Date of Birth (14 May 1998)</li>
+                <li>Full Aadhaar/National ID number</li>
+                <li>Biometric data & address scan</li>
+                <li>Private witness blinding factors</li>
+              </ul>
             </div>
           </div>
 
-          <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="margin-top:10px; margin-bottom:16px;">
-            Sign In to Ghost-Vault
+          <button class="btn btn-primary" onclick="generateZkProof()" id="btnGenerateProof">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Generate Cryptographic ZK Proof
           </button>
-        </form>
+        </div>
 
-        <p style="text-align:center; font-size:11px; color:var(--text-hint); margin-top:auto;">
-          Protected by Bcrypt key derivation with 12 adaptive rounds.<br>Session keys verified via HMAC-SHA256.
-        </p>
+        <!-- Generated Proof Result Card (Shows when proof generated) -->
+        <div id="zkProofResultCard" class="card" style="display:none; border:2px solid var(--brand-green); background:var(--brand-tint);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div style="font-size:14px; font-weight:700; color:var(--brand-pressed);" id="zkResultProofId">ZKP-AGE-XXXXX</div>
+            <span class="badge badge-success">PROOF GENERATED</span>
+          </div>
+          <div style="font-size:13px; font-weight:600; margin-bottom:6px;" id="zkResultClaim">Statement Verified</div>
+          <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">
+            <strong>Pedersen Commitment (C):</strong> <span id="zkResultCommitment" class="mono"></span>
+          </div>
+          <div style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">
+            <strong>Challenge (e):</strong> <span id="zkResultChallenge" class="mono"></span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-primary btn-sm" onclick="verifyActiveProof()" id="btnVerifyActiveProof">Verify Proof Mathematically</button>
+            <button class="btn btn-secondary btn-sm" onclick="shareActiveProof()">Create Sharing Link</button>
+          </div>
+          <div id="zkVerificationVerdict" style="display:none; margin-top:10px; padding:8px 12px; background:white; border-radius:8px; font-size:12px;"></div>
+        </div>
+
+        <!-- Proof History -->
+        <div style="margin:20px 0 10px 0; display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:15px; font-weight:700;">Generated Proof History</h3>
+          <button onclick="loadZkProofHistory()" style="background:none; border:none; color:var(--brand-green); font-size:12px; font-weight:600; cursor:pointer;">Refresh Proofs</button>
+        </div>
+        <div id="zkProofHistoryContainer"></div>
       </div>
 
-      <!-- ================= 3. DASHBOARD SCREEN ================= -->
-      <div class="screen" id="screenDashboard">
-        <div class="app-header">
-          <div class="brand-logo-row">
-            <div class="brand-icon-sq">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-            </div>
-            <div class="brand-title-wrap">
-              <h1>KavachSetu</h1>
-              <p>THE GHOST PROTOCOL</p>
-            </div>
+      <!-- ================= 5. CONSENT & PERMISSION MANAGEMENT ================= -->
+      <div class="screen" id="screenConsent">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h2 style="font-size:20px; font-weight:800;">Consent & Permission Manager</h2>
+            <p style="font-size:12px; color:var(--text-secondary);">
+              Granular access control. Authorize verifiers, set expiry durations, or revoke future token access with 1 click.
+            </p>
           </div>
-          <button onclick="refreshData()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-          </button>
+          <button class="btn btn-secondary btn-sm" onclick="triggerDemoConsentRequest()">+ Trigger Demo Request</button>
         </div>
 
-        <div style="margin-bottom:14px;">
-          <div style="font-size:13px; color:var(--text-secondary);">Welcome back,</div>
-          <div style="font-size:22px; font-weight:700;" id="dashGreetingName">Aarav Mehta</div>
+        <!-- Incoming Access Requests -->
+        <h3 style="font-size:15px; font-weight:700; margin-bottom:10px;">Incoming Access Requests</h3>
+        <div id="incomingRequestsContainer"></div>
+
+        <!-- Active Permissions -->
+        <h3 style="font-size:15px; font-weight:700; margin:20px 0 10px 0;">Active Permissions</h3>
+        <div id="activePermissionsContainer"></div>
+
+        <!-- Consent History & Revocations -->
+        <h3 style="font-size:15px; font-weight:700; margin:20px 0 10px 0;">Audit History & Revocations</h3>
+        <div id="historicalConsentContainer"></div>
+      </div>
+
+      <!-- ================= 6. SECURE DOCUMENT SHARING & QR ================= -->
+      <div class="screen" id="screenSharing">
+        <div style="margin-bottom:16px;">
+          <h2 style="font-size:20px; font-weight:800;">Secure Document & Proof Sharing</h2>
+          <p style="font-size:12px; color:var(--text-secondary);">
+            Generate purpose-specific, time-bound, QR-encoded sharing tokens. Public document URLs are never exposed.
+          </p>
         </div>
 
-        <!-- Ghost-Vault Hero Card -->
-        <div class="vault-hero">
-          <div class="vault-hero-header">
-            <span class="vault-hero-tag">GHOST-VAULT OVERVIEW</span>
-            <span class="badge" style="background:rgba(255,255,255,0.2); color:white; border:none;">ACTIVE & SECURE</span>
-          </div>
-          <div class="vault-stats-row">
-            <div class="stat-col">
-              <div class="stat-label">Total Credentials</div>
-              <div class="stat-num" id="dashTotalCreds">3</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-col">
-              <div class="stat-label">Valid & Ready</div>
-              <div class="stat-num" id="dashValidCreds">3</div>
-            </div>
-          </div>
-          <div class="hero-btn" onclick="navigateToTab('vault')">
-            <span>Manage All Vault Credentials</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </div>
-        </div>
-
-        <!-- Credential Previews -->
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <h3 style="font-size:15px; font-weight:600;">Vault Credentials</h3>
-          <button onclick="navigateToTab('vault')" style="background:none; border:none; color:var(--brand-green); font-size:12px; font-weight:600; cursor:pointer;">View All</button>
-        </div>
-        <div id="dashCredentialList"></div>
-
-        <!-- Security Architecture Overview (Honest & Real) -->
-        <h3 style="font-size:15px; font-weight:600; margin:16px 0 10px 0;">Security Overview</h3>
+        <!-- Share Creator Form -->
         <div class="card">
-          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-            <div style="width:32px; height:32px; background:var(--brand-tint); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--brand-green);">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-            </div>
-            <div style="flex:1;">
-              <div style="font-size:13px; font-weight:600;">Decoupled Protection</div>
-              <div style="font-size:11px; color:var(--text-secondary);">Zero raw PII or statements sent to network</div>
-            </div>
-            <span class="badge badge-success">ACTIVE</span>
+          <div class="card-title">Create Secure Sharing Link & QR Code</div>
+          <div class="card-desc" style="margin-bottom:14px;">Generates a cryptographically random, revocable token for banks or verifiers.</div>
+
+          <div class="input-group">
+            <label class="input-label">Share Type</label>
+            <select id="shareTypeSelect" class="input-field" onchange="onShareTypeChanged()">
+              <option value="ZK_PROOF">Zero-Knowledge Proof (Zero PII Disclosed)</option>
+              <option value="DOCUMENT">Masked Document Projection</option>
+            </select>
           </div>
-          <div style="border-top:1px solid var(--border); padding-top:10px; display:flex; flex-direction:column; gap:6px; font-size:12px;">
-            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Key Derivation</span><span style="font-weight:600;">Bcrypt 12 Rounds + Salt</span></div>
-            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Storage Architecture</span><span style="font-weight:600;">Decoupled Client Metadata</span></div>
-            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Session Protocol</span><span style="font-weight:600;">HMAC-SHA256 Token</span></div>
+
+          <div class="input-group" id="shareTargetGroup">
+            <label class="input-label" id="shareTargetLabel">Select Item to Share</label>
+            <select id="shareTargetSelect" class="input-field"></select>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Sharing Purpose</label>
+            <input type="text" id="sharePurposeInput" class="input-field" placeholder="e.g. Home Loan Underwriting, Tenant Verification">
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Recipient / Institution Name</label>
+            <input type="text" id="shareRecipientInput" class="input-field" placeholder="e.g. HDFC Bank Ltd">
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="input-group">
+              <label class="input-label">Access Expiration</label>
+              <select id="shareExpirySelect" class="input-field">
+                <option value="1">1 Hour</option>
+                <option value="24" selected>24 Hours</option>
+                <option value="72">3 Days</option>
+                <option value="168">7 Days</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Max Allowed Accesses</label>
+              <select id="shareMaxUsesSelect" class="input-field">
+                <option value="1">Single Use (1x)</option>
+                <option value="5" selected>Up to 5 Uses</option>
+                <option value="20">Up to 20 Uses</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="createShareLink()">Generate Secure Link & QR Code</button>
+        </div>
+
+        <!-- Active Share Links Container -->
+        <h3 style="font-size:15px; font-weight:700; margin:20px 0 10px 0;">Active & Historical Shared Links</h3>
+        <div id="shareLinksContainer"></div>
+      </div>
+
+      <!-- ================= 7. BLOCKCHAIN AUDIT EXPLORER (FABRIC) ================= -->
+      <div class="screen" id="screenBlockchain">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h2 style="font-size:20px; font-weight:800;">Hyperledger Fabric Audit Explorer</h2>
+            <p style="font-size:12px; color:var(--text-secondary);">
+              Channel: <span class="mono" style="font-weight:700;">kavach-channel</span> &bull; Chaincode: <span class="mono">vault-audit-cc</span>
+            </p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="verifyBlockchainChain()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+            Verify Merkle Chain Integrity
+          </button>
+        </div>
+
+        <!-- Fabric Peer & Channel Banner -->
+        <div class="card" style="background:var(--brand-tint); border-color:rgba(11,107,88,0.25);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="badge badge-success">FABRIC ONLINE</span>
+              <span style="font-size:13px; font-weight:700; color:var(--brand-pressed);">peer0.org1.kavachsetu.internal</span>
+            </div>
+            <span style="font-size:11px; color:var(--text-secondary);">Raft BFT Consensus</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px; font-size:12px; margin-top:8px;">
+            <div><span style="color:var(--text-secondary);">Total Blocks:</span> <strong id="fabricTotalBlocks">0</strong></div>
+            <div><span style="color:var(--text-secondary);">Total Transactions:</span> <strong id="fabricTotalTxs">0</strong></div>
+            <div><span style="color:var(--text-secondary);">MSP:</span> <strong>KavachOrgMSP</strong></div>
+            <div><span style="color:var(--text-secondary);">State Storage:</span> <strong>CouchDB Sink</strong></div>
           </div>
         </div>
 
-        <!-- Recent Activity Previews -->
-        <div style="display:flex; justify-content:space-between; align-items:center; margin:16px 0 10px 0;">
-          <h3 style="font-size:15px; font-weight:600;">Recent Activity</h3>
-          <button onclick="navigateToTab('activity')" style="background:none; border:none; color:var(--brand-green); font-size:12px; font-weight:600; cursor:pointer;">All Events</button>
-        </div>
-        <div id="dashActivityList"></div>
+        <!-- Chain Integrity Verdict Box -->
+        <div id="chainIntegrityBox" style="display:none; margin-bottom:14px; padding:12px 14px; border-radius:12px; font-size:12px; font-weight:600;"></div>
+
+        <!-- Recent Blocks -->
+        <h3 style="font-size:15px; font-weight:700; margin:16px 0 10px 0;">Recent Cryptographic Blocks</h3>
+        <div id="fabricBlocksContainer"></div>
+
+        <!-- Recent On-Chain Transactions -->
+        <h3 style="font-size:15px; font-weight:700; margin:20px 0 10px 0;">Committed Transactions</h3>
+        <div id="fabricTxsContainer"></div>
       </div>
 
-      <!-- ================= 4. GHOST-VAULT SCREEN ================= -->
-      <div class="screen" id="screenVault">
-        <div class="app-header">
-          <h2 style="font-size:20px; font-weight:700;">Ghost-Vault</h2>
-          <button onclick="loadVaultCredentials()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-          </button>
-        </div>
-        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">
-          Decoupled credentials for zero-knowledge predicate proofing. Select any credential to view verified attributes.
-        </p>
+      <!-- ================= 8. PERSONAL IDENTITY PROFILE & SECURITY ================= -->
+      <div class="screen" id="screenProfile">
+        <h2 style="font-size:20px; font-weight:800; margin-bottom:14px;">Identity Profile & Security</h2>
 
-        <!-- Category Filter Pills -->
-        <div class="filter-pills-row">
-          <button class="filter-pill active" onclick="filterVault('ALL', this)">All (3)</button>
-          <button class="filter-pill" onclick="filterVault('IDENTITY', this)">Identity (1)</button>
-          <button class="filter-pill" onclick="filterVault('KYC', this)">KYC (1)</button>
-          <button class="filter-pill" onclick="filterVault('INCOME', this)">Income (1)</button>
-        </div>
-
-        <div id="vaultCardsContainer"></div>
-      </div>
-
-      <!-- ================= 5. CREDENTIAL DETAILS SCREEN ================= -->
-      <div class="screen" id="screenCredentialDetail">
-        <div class="app-header">
-          <button onclick="navigateToTab('vault')" style="background:none; border:none; cursor:pointer; color:var(--text-primary); display:flex; align-items:center; gap:4px;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            <span style="font-size:14px; font-weight:600;">Vault</span>
-          </button>
-          <div style="font-size:14px; font-weight:600;">Credential Details</div>
-          <div style="width:40px;"></div>
-        </div>
-
-        <div id="credentialDetailContent"></div>
-      </div>
-
-      <!-- ================= 6. ACTIVITY SCREEN ================= -->
-      <div class="screen" id="screenActivity">
-        <div class="app-header">
-          <h2 style="font-size:20px; font-weight:700;">Activity History</h2>
-          <button onclick="loadActivityLog()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-          </button>
-        </div>
-        <p style="font-size:13px; color:var(--text-secondary); margin-bottom:14px;">
-          Immutable local record of all logins and credential access events.
-        </p>
-
-        <div id="activityContainer"></div>
-      </div>
-
-      <!-- ================= 7. SETTINGS SCREEN ================= -->
-      <div class="screen" id="screenSettings">
-        <div class="app-header">
-          <h2 style="font-size:20px; font-weight:700;">Settings & Security</h2>
-        </div>
-
-        <!-- Profile card -->
-        <div class="card" style="display:flex; align-items:center; gap:14px;">
-          <div style="width:52px; height:52px; background:var(--brand-green); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:20px; font-weight:700;">
+        <!-- Profile Card -->
+        <div class="card" style="display:flex; gap:16px; align-items:center;">
+          <div style="width:58px; height:58px; border-radius:50%; background:var(--brand-green); color:white; font-size:24px; font-weight:800; display:flex; align-items:center; justify-content:center;">
             A
           </div>
-          <div>
-            <div style="font-size:16px; font-weight:700;" id="settingsUserName">Aarav Mehta</div>
-            <div style="font-size:12px; color:var(--text-secondary);" id="settingsUserEmail">user@kavachsetu.demo</div>
-            <div style="margin-top:4px;"><span class="badge badge-neutral mono" id="settingsUserCode">ID: KVS-001</span></div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-size:17px; font-weight:700;" id="profFullName">Aarav Mehta</h3>
+              <button class="btn btn-secondary btn-sm" onclick="openEditProfileModal()">Edit Profile</button>
+            </div>
+            <div style="font-size:12px; color:var(--text-secondary);" id="profEmail">user@kavachsetu.demo</div>
+            <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
+              <span class="badge badge-neutral mono" id="profUserCode">KVS-001</span>
+              <span class="badge badge-success">100% PROFILE VERIFIED</span>
+            </div>
           </div>
         </div>
 
-        <h3 style="font-size:14px; font-weight:600; margin:16px 0 8px 0;">Account Information</h3>
-        <div class="card" style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
-          <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Phone (Masked)</span><span style="font-weight:600;">+91 ••••• ••421</span></div>
-          <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Framework Tier</span><span style="font-weight:600;">Stage 1 Evaluation</span></div>
-          <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Custody Mode</span><span style="font-weight:600;">Self-Custodial</span></div>
-        </div>
-
-        <h3 style="font-size:14px; font-weight:600; margin:16px 0 8px 0;">Security Guarantees</h3>
-        <div class="card" style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
-          <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Credential Hashing</span><span class="badge badge-success">Bcrypt (12 Rounds)</span></div>
-          <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Session Integrity</span><span class="badge badge-success">HMAC-SHA256 Token</span></div>
-          <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Data Protection Mode</span><span class="badge badge-info">Zero Raw Leakage</span></div>
-        </div>
-
-        <!-- Synthetic Disclaimer -->
-        <div class="info-banner warning" style="margin-top:8px;">
-          <div>
-            <strong>Stage 1 Synthetic Testing Notice</strong><br>
-            All credentials represent synthetic demo data. ZK proofs, bank integrations and Hyperledger ledgers are scheduled for future stages.
+        <!-- Personal Info Details Grid -->
+        <div class="card">
+          <div class="card-title">Personal Information</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:12px; margin-top:10px;">
+            <div><span style="color:var(--text-secondary);">Phone (Masked):</span><div style="font-weight:600;" id="profPhone">+91 ••••• ••421</div></div>
+            <div><span style="color:var(--text-secondary);">Date of Birth:</span><div style="font-weight:600;" id="profDob">14 May 1998</div></div>
+            <div><span style="color:var(--text-secondary);">Residence Region:</span><div style="font-weight:600;" id="profAddress">Bandra West, Mumbai</div></div>
+            <div><span style="color:var(--text-secondary);">Custody Mode:</span><div style="font-weight:600;">Self-Custodial Client</div></div>
           </div>
         </div>
 
-        <button class="btn btn-danger" onclick="handleLogout()" style="margin-top:20px; margin-bottom:24px;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        <!-- Account Security Settings -->
+        <div class="card">
+          <div class="card-title">Security & Key Derivation</div>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px; font-size:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong>Password Protection</strong>
+                <div style="color:var(--text-secondary);">Bcrypt with 12 adaptive work rounds</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="openChangePasswordModal()">Change Password</button>
+            </div>
+            <hr style="border:none; border-top:1px solid var(--border);">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong>Emergency Recovery Seed</strong>
+                <div style="color:var(--text-secondary);">BIP-39 compatible 12-word mnemonic phrase</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="openRecoveryKeyModal()">View Seed</button>
+            </div>
+            <hr style="border:none; border-top:1px solid var(--border);">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong>Encrypted Vault Backup</strong>
+                <div style="color:var(--text-secondary);">Export AES-256-GCM package or restore</div>
+              </div>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-secondary btn-sm" onclick="exportEncryptedBackup()">Export</button>
+                <button class="btn btn-secondary btn-sm" onclick="openRestoreModal()">Restore</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-danger" onclick="handleLogout()" style="margin-top:10px; margin-bottom:24px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
           Sign Out of Ghost-Vault
         </button>
       </div>
 
-    </div>
+    </div><!-- End screen-container -->
+  </div><!-- End app-frame -->
 
-    <!-- Bottom Navigation Bar -->
-    <div class="bottom-nav" id="bottomNav" style="display:none;">
-      <button class="nav-item active" id="navHome" onclick="navigateToTab('dashboard')">
-        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-        <span>Home</span>
-      </button>
-      <button class="nav-item" id="navVault" onclick="navigateToTab('vault')">
-        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-        <span>Ghost-Vault</span>
-      </button>
-      <button class="nav-item" id="navActivity" onclick="navigateToTab('activity')">
-        <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
-        <span>Activity</span>
-      </button>
-      <button class="nav-item" id="navSettings" onclick="navigateToTab('settings')">
-        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-        <span>Settings</span>
-      </button>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. Document Upload & Live OCR Scan Modal -->
+  <div class="modal-overlay" id="uploadModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">Upload Document to Ghost-Vault</div>
+        <button class="modal-close-btn" onclick="closeModal('uploadModal')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="drop-zone" onclick="document.getElementById('docFileInput').click()">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2" style="margin-bottom:8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <div style="font-weight:700; font-size:14px; color:var(--brand-green);">Choose File or Drag & Drop</div>
+        <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">Supports PDF, JPG, PNG (Max 15MB)</div>
+        <input type="file" id="docFileInput" style="display:none;" onchange="handleFileSelected(event)" accept=".pdf,.jpg,.jpeg,.png">
+      </div>
+
+      <div id="ocrAnalysisNotice" style="display:none; margin-bottom:14px; padding:12px; background:#ECFDF5; border:1px solid #A7F3D0; border-radius:10px; font-size:12px;">
+        <div style="font-weight:700; color:#065F46; margin-bottom:4px;">&check; OCR Pre-Analysis Complete</div>
+        <div id="ocrNoticeText" style="color:#047857;"></div>
+      </div>
+
+      <form id="uploadDocForm" onsubmit="submitDocumentUpload(event)">
+        <div class="input-group">
+          <label class="input-label">Document Category</label>
+          <select id="uploadCategory" class="input-field" required>
+            <option value="Aadhaar Card">Aadhaar Card</option>
+            <option value="PAN Card">PAN Card</option>
+            <option value="Passport">Passport</option>
+            <option value="Driving Licence">Driving Licence</option>
+            <option value="Voter ID">Voter ID</option>
+            <option value="Income Certificate">Income Certificate</option>
+            <option value="Caste Certificate">Caste Certificate</option>
+            <option value="Domicile Certificate">Domicile Certificate</option>
+            <option value="Educational Certificates">Educational Certificates</option>
+            <option value="Bank Account Proof">Bank Account Proof</option>
+            <option value="Other Documents">Other Documents</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Document Title</label>
+          <input type="text" id="uploadTitle" class="input-field" placeholder="e.g. Republic of India Passport" required>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Document Holder Name</label>
+          <input type="text" id="uploadHolderName" class="input-field" placeholder="Aarav Mehta" required>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Document Number / Reference (Will be masked)</label>
+          <input type="text" id="uploadDocNumber" class="input-field" placeholder="e.g. Z9841203 or ABCDE1234F" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="input-group">
+            <label class="input-label">Issue Date</label>
+            <input type="date" id="uploadIssueDate" class="input-field">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Expiry Date (If applicable)</label>
+            <input type="date" id="uploadExpiryDate" class="input-field">
+          </div>
+        </div>
+
+        <button type="submit" id="btnUploadSubmit" class="btn btn-primary" style="margin-top:10px;">Encrypt & Save to Ghost-Vault</button>
+      </form>
     </div>
   </div>
 
+  <!-- 2. Document Preview Modal -->
+  <div class="modal-overlay" id="previewModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title" id="prevTitle">Document Preview</div>
+        <button class="modal-close-btn" onclick="closeModal('previewModal')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div style="text-align:center; padding:20px; background:var(--card-subtle); border-radius:14px; margin-bottom:16px;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <div style="font-weight:700; font-size:16px; margin-top:8px;" id="prevDocCategory">Identity Document</div>
+        <div style="font-size:13px; color:var(--text-secondary); margin-top:2px;" id="prevMaskedNum">XXXX-XXXX-8921</div>
+        <div style="margin-top:8px;" id="prevStatusBadge"></div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:8px; font-size:12px; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Holder:</span><strong id="prevHolderName">Aarav Mehta</strong></div>
+        <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Issue Date:</span><strong id="prevIssueDate">-</strong></div>
+        <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Expiry Date:</span><strong id="prevExpiryDate">-</strong></div>
+        <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Encrypted Size:</span><strong id="prevFileSize">-</strong></div>
+        <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">File Hash (SHA-256):</span><strong class="mono" id="prevFileHash" style="font-size:10px;"></strong></div>
+        <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Verified By:</span><strong id="prevVerifiedBy">-</strong></div>
+      </div>
+
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-primary" id="btnDownloadDoc" onclick="downloadActiveDoc()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Decrypted File
+        </button>
+        <button class="btn btn-secondary" onclick="closeModal('previewModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Notifications Drawer Modal -->
+  <div class="modal-overlay" id="notifModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">Notifications & Security Alerts</div>
+        <button class="modal-close-btn" onclick="closeModal('notifModal')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+        <button class="btn btn-secondary btn-sm" onclick="markAllNotificationsRead()">Mark All Read</button>
+      </div>
+      <div id="notificationsList" style="max-height:400px; overflow-y:auto;"></div>
+    </div>
+  </div>
+
+  <!-- 4. Security Overview Modal -->
+  <div class="modal-overlay" id="securityModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">Ghost-Vault Cryptographic Security</div>
+        <button class="modal-close-btn" onclick="closeModal('securityModal')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; font-size:13px;">
+        <div class="card" style="background:var(--brand-tint);">
+          <strong>AES-256-GCM Storage Encryption</strong>
+          <p style="font-size:12px; color:var(--text-secondary); margin-top:4px;">
+            Every file uploaded is encrypted with 256-bit Galois/Counter Mode before being written to disk. The decryption key is isolated to the authenticated session.
+          </p>
+        </div>
+        <div class="card" style="background:var(--card-subtle);">
+          <strong>BN254 (alt_bn128) Zero-Knowledge Engine</strong>
+          <p style="font-size:12px; color:var(--text-secondary); margin-top:4px;">
+            Pedersen Commitments and Sigma-protocol range proofs executed over the standard Ethereum ZK curve prime field.
+          </p>
+        </div>
+        <div class="card" style="background:var(--card-subtle);">
+          <strong>Hyperledger Fabric Audit Trail</strong>
+          <p style="font-size:12px; color:var(--text-secondary); margin-top:4px;">
+            All document state transitions, approvals, and revocations commit cryptographic SHA-256 hashes to the <span class="mono">kavach-channel</span> ledger.
+          </p>
+        </div>
+      </div>
+      <button class="btn btn-secondary" onclick="closeModal('securityModal')" style="margin-top:14px;">Done</button>
+    </div>
+  </div>
+
+  <!-- 5. Edit Profile Modal -->
+  <div class="modal-overlay" id="editProfileModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">Edit Personal Identity Profile</div>
+        <button class="modal-close-btn" onclick="closeModal('editProfileModal')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form onsubmit="handleProfileUpdateSubmit(event)">
+        <div class="input-group">
+          <label class="input-label">Full Legal Name</label>
+          <input type="text" id="editFullName" class="input-field" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Masked Phone Number</label>
+          <input type="text" id="editPhone" class="input-field" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Date of Birth</label>
+          <input type="date" id="editDob" class="input-field" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Address (Masked)</label>
+          <input type="text" id="editAddress" class="input-field" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top:10px;">Save Profile Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. Change Password Modal -->
+  <div class="modal-overlay" id="changePasswordModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">Update Password</div>
+        <button class="modal-close-btn" onclick="closeModal('changePasswordModal')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form onsubmit="handleChangePasswordSubmit(event)">
+        <div class="input-group">
+          <label class="input-label">Current Password</label>
+          <input type="password" id="oldPasswordInput" class="input-field" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label">New Password (Min 8 chars)</label>
+          <input type="password" id="newPasswordInput" class="input-field" required minlength="8">
+        </div>
+        <button type="submit" class="btn btn-primary">Re-Hash & Update</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. Recovery Seed Modal -->
+  <div class="modal-overlay" id="recoveryModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">Emergency Recovery Seed Phrase</div>
+        <button class="modal-close-btn" onclick="closeModal('recoveryModal')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">
+        Write down these 12 words in order. This phrase reconstructs your cryptographic vault if your password is forgotten.
+      </p>
+      <div id="seedWordsContainer" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:16px;"></div>
+      <button class="btn btn-secondary" onclick="closeModal('recoveryModal')">I Have Saved This Seed</button>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
   <script>
-    // State
+    // State management
     let authToken = localStorage.getItem('kavach_token') || null;
-    let currentUser = JSON.parse(localStorage.getItem('kavach_user') || 'null');
-    let allCredentials = [];
-    let currentCategoryFilter = 'ALL';
+    let currentUser = null;
+    let currentDashboard = null;
+    let vaultDocuments = [];
+    let vaultCredentials = [];
+    let activeDocPreview = null;
+    let activeZkProof = null;
+    let currentDocCategory = 'ALL';
+    let currentDocStatus = 'ALL';
+    let currentDocSearch = '';
+    let currentDocSort = 'date_desc';
+
+    const API_BASE = '/api/v1';
+
+    // API Helper
+    async function apiRequest(endpoint, options = {}) {
+      const headers = options.headers || {};
+      if (authToken) {
+        headers['Authorization'] = `Bearer ${authToken}`;
+      }
+      if (!(options.body instanceof FormData) && !headers['Content-Type']) {
+        headers['Content-Type'] = 'application/json';
+      }
+      const resp = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+      if (resp.status === 401) {
+        handleLogout();
+        throw new Error('Session expired. Please sign in again.');
+      }
+      return resp;
+    }
+
+    // Window initialization
+    window.addEventListener('DOMContentLoaded', async () => {
+      if (authToken) {
+        try {
+          await verifySession();
+        } catch (e) {
+          showScreen('screenLogin');
+        }
+      } else {
+        showScreen('screenSplash');
+      }
+    });
 
     function toggleDesktopView() {
       const frame = document.getElementById('appFrame');
+      const label = document.getElementById('viewModeLabel');
       frame.classList.toggle('desktop-mode');
+      if (frame.classList.contains('desktop-mode')) {
+        label.innerText = 'Mobile View';
+      } else {
+        label.innerText = 'Desktop View';
+      }
     }
 
     function showScreen(screenId) {
@@ -806,326 +1551,1213 @@
       const target = document.getElementById(screenId);
       if (target) target.classList.add('active');
 
-      const bottomNav = document.getElementById('bottomNav');
+      const topHeader = document.getElementById('appTopHeader');
+      const subnav = document.getElementById('vaultSubnav');
+
       if (screenId === 'screenSplash' || screenId === 'screenLogin') {
-        bottomNav.style.display = 'none';
+        topHeader.style.display = 'none';
+        subnav.style.display = 'none';
       } else {
-        bottomNav.style.display = 'flex';
+        topHeader.style.display = 'flex';
+        subnav.style.display = 'flex';
       }
     }
 
-    function navigateToTab(tab) {
-      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-      if (tab === 'dashboard') {
-        document.getElementById('navHome').classList.add('active');
-        showScreen('screenDashboard');
-        loadDashboard();
-      } else if (tab === 'vault') {
-        document.getElementById('navVault').classList.add('active');
-        showScreen('screenVault');
-        loadVaultCredentials();
-      } else if (tab === 'activity') {
-        document.getElementById('navActivity').classList.add('active');
-        showScreen('screenActivity');
-        loadActivityLog();
-      } else if (tab === 'settings') {
-        document.getElementById('navSettings').classList.add('active');
-        showScreen('screenSettings');
-        if (currentUser) {
-          document.getElementById('settingsUserName').textContent = currentUser.full_name;
-          document.getElementById('settingsUserEmail').textContent = currentUser.email;
-          document.getElementById('settingsUserCode').textContent = 'ID: ' + currentUser.user_code;
-        }
-      }
+    function switchTab(tabKey) {
+      document.querySelectorAll('.subnav-btn').forEach(b => b.classList.remove('active'));
+      const btn = document.getElementById(`tab${tabKey.charAt(0).toUpperCase() + tabKey.slice(1)}`);
+      if (btn) btn.classList.add('active');
+
+      const screenMap = {
+        'overview': 'screenOverview',
+        'documents': 'screenDocuments',
+        'zkStudio': 'screenZkStudio',
+        'consent': 'screenConsent',
+        'sharing': 'screenSharing',
+        'blockchain': 'screenBlockchain',
+        'profile': 'screenProfile'
+      };
+      showScreen(screenMap[tabKey] || 'screenOverview');
+
+      // Refresh specific tab data
+      if (tabKey === 'documents') loadDocuments();
+      if (tabKey === 'zkStudio') loadZkStudioData();
+      if (tabKey === 'consent') loadConsentRequests();
+      if (tabKey === 'sharing') loadSharingData();
+      if (tabKey === 'blockchain') loadBlockchainData();
+      if (tabKey === 'profile') loadProfileData();
     }
 
-    function autofillDemoUser() {
+    // Modal Helpers
+    function openModal(id) {
+      const m = document.getElementById(id);
+      if (m) m.classList.add('active');
+    }
+    function closeModal(id) {
+      const m = document.getElementById(id);
+      if (m) m.classList.remove('active');
+    }
+
+    // ---------------- AUTHENTICATION ----------------
+    function autofillDemoCreds() {
       document.getElementById('loginEmail').value = 'user@kavachsetu.demo';
       document.getElementById('loginPassword').value = 'GhostProtocol@2026';
     }
 
-    function togglePasswordVisibility() {
-      const input = document.getElementById('loginPassword');
-      if (input.type === 'password') {
-        input.type = 'text';
-      } else {
-        input.type = 'password';
-      }
+    async function autofillAndLogin() {
+      showScreen('screenLogin');
+      autofillDemoCreds();
+      await handleLoginSubmit({ preventDefault: () => {} });
     }
 
-    async function handleLoginSubmit(event) {
-      event.preventDefault();
+    async function handleLoginSubmit(e) {
+      if (e && e.preventDefault) e.preventDefault();
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
-      const errBox = document.getElementById('loginErrorBox');
-      const errText = document.getElementById('loginErrorText');
+      const errorBox = document.getElementById('loginErrorBox');
+      const errorText = document.getElementById('loginErrorText');
       const submitBtn = document.getElementById('loginSubmitBtn');
 
-      errBox.style.display = 'none';
+      errorBox.style.display = 'none';
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Verifying with Ghost-Vault...';
+      submitBtn.innerText = 'Unlocking Vault...';
 
       try {
-        const res = await fetch('/api/v1/auth/login', {
+        const resp = await fetch(`${API_BASE}/auth/login`, {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({email, password})
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
         });
-
-        const data = await res.json();
-        if (!res.ok) {
-          throw new Error(data.detail || 'Authentication failed');
+        const data = await resp.json();
+        if (!resp.ok) {
+          throw new Error(data.detail || 'Authentication failed.');
         }
 
         authToken = data.access_token;
-        currentUser = data.user;
         localStorage.setItem('kavach_token', authToken);
-        localStorage.setItem('kavach_user', JSON.stringify(currentUser));
-
-        navigateToTab('dashboard');
+        currentUser = data.user;
+        await refreshAllVaultData();
+        switchTab('overview');
       } catch (err) {
-        errBox.style.display = 'flex';
-        errText.textContent = err.message;
+        errorBox.style.display = 'block';
+        errorText.innerText = err.message;
       } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Sign In to Ghost-Vault';
+        submitBtn.innerText = 'Sign In to Ghost-Vault';
       }
     }
 
     async function handleLogout() {
-      if (!confirm('Are you sure you want to sign out of Ghost-Vault?')) return;
       try {
         if (authToken) {
-          await fetch('/api/v1/auth/logout', {
-            method: 'POST',
-            headers: {'Authorization': 'Bearer ' + authToken}
-          });
+          await apiRequest('/auth/logout', { method: 'POST' });
         }
-      } catch (_) {}
+      } catch (e) {}
       authToken = null;
       currentUser = null;
       localStorage.removeItem('kavach_token');
-      localStorage.removeItem('kavach_user');
       showScreen('screenLogin');
     }
 
-    async function loadDashboard() {
-      if (!authToken) {
-        showScreen('screenLogin');
+    async function verifySession() {
+      const resp = await apiRequest('/auth/me');
+      if (resp.ok) {
+        currentUser = await resp.json();
+        await refreshAllVaultData();
+        switchTab('overview');
+      } else {
+        handleLogout();
+      }
+    }
+
+    // ---------------- OVERVIEW DASHBOARD ----------------
+    async function refreshAllVaultData() {
+      await loadDashboardSummary();
+      await checkUnreadNotifications();
+    }
+
+    async function loadDashboardSummary() {
+      try {
+        const resp = await apiRequest('/dashboard/summary');
+        if (!resp.ok) return;
+        currentDashboard = await resp.json();
+
+        // Populate metrics
+        document.getElementById('statTotalDocs').innerText = currentDashboard.total_documents;
+        document.getElementById('statVerifiedCreds').innerText = currentDashboard.verified_credentials;
+        document.getElementById('statPendingVerif').innerText = currentDashboard.pending_verifications;
+        document.getElementById('statActivePerms').innerText = currentDashboard.active_permissions;
+        document.getElementById('statUpcomingExp').innerText = currentDashboard.upcoming_expirations;
+
+        document.getElementById('dashCitizenName').innerText = currentDashboard.user.full_name;
+        document.getElementById('dashUserCode').innerText = currentDashboard.user.user_code;
+
+        // Render Doc Previews
+        renderDashboardDocPreviews(currentDashboard.recent_documents || []);
+        renderDashboardCredPreviews(currentDashboard.recent_credentials || []);
+        renderDashboardActivity(currentDashboard.recent_activities || []);
+      } catch (err) {
+        console.error("Dashboard error:", err);
+      }
+    }
+
+    function renderDashboardDocPreviews(docs) {
+      const container = document.getElementById('dashDocPreviewList');
+      if (!docs || docs.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-hint); font-size:13px;">No documents found. Tap "Add Document" above.</div>`;
         return;
       }
+      container.innerHTML = docs.map(d => `
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="viewDocumentDetail('${d.id}')">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:34px; height:34px; background:var(--brand-tint); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--brand-green);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div>
+              <div style="font-size:13px; font-weight:700;">${escapeHtml(d.title)}</div>
+              <div style="font-size:11px; color:var(--text-secondary);">${d.category} &bull; <span class="mono">${d.document_number_masked}</span></div>
+            </div>
+          </div>
+          <div>${getStatusBadgeHtml(d.verification_status, d.is_expired, d.is_expiring_soon)}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderDashboardCredPreviews(creds) {
+      const container = document.getElementById('dashCredPreviewList');
+      if (!creds || creds.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-hint); font-size:13px;">No credentials generated yet.</div>`;
+        return;
+      }
+      container.innerHTML = creds.map(c => `
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="switchTab('zkStudio')">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:34px; height:34px; background:#ECFDF5; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#065F46;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            </div>
+            <div>
+              <div style="font-size:13px; font-weight:700;">${escapeHtml(c.title)}</div>
+              <div style="font-size:11px; color:var(--text-secondary);">${c.category} &bull; <span class="mono">${c.id}</span></div>
+            </div>
+          </div>
+          <span class="badge badge-verified">ATTESTED</span>
+        </div>
+      `).join('');
+    }
+
+    function renderDashboardActivity(acts) {
+      const container = document.getElementById('dashActivityContainer');
+      if (!acts || acts.length === 0) {
+        container.innerHTML = `<div style="text-align:center; color:var(--text-hint); font-size:13px;">No recent activities logged.</div>`;
+        return;
+      }
+      container.innerHTML = acts.map(a => `
+        <div class="timeline-item">
+          <div class="timeline-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="font-size:13px;">${escapeHtml(a.title)}</strong>
+              <span style="font-size:11px; color:var(--text-hint);">${a.timestamp}</span>
+            </div>
+            <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">${escapeHtml(a.description || '')}</div>
+            ${a.fabric_tx_id ? `<div style="font-size:10px; color:var(--brand-green); margin-top:4px;" class="mono">&bull; Fabric Tx: ${a.fabric_tx_id}</div>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getStatusBadgeHtml(status, isExpired = false, isExpiringSoon = false) {
+      if (isExpired) return `<span class="badge badge-danger">EXPIRED</span>`;
+      if (isExpiringSoon) return `<span class="badge badge-warning">EXPIRING SOON</span>`;
+      if (status === 'ISSUER_VERIFIED' || status === 'DEMO_VERIFIED') return `<span class="badge badge-verified">&check; VERIFIED</span>`;
+      if (status === 'PENDING_VERIFICATION') return `<span class="badge badge-info">PENDING</span>`;
+      if (status === 'REJECTED') return `<span class="badge badge-danger">REJECTED</span>`;
+      return `<span class="badge badge-neutral">UNVERIFIED</span>`;
+    }
+
+    // ---------------- DIGITAL DOCUMENT VAULT ----------------
+    async function loadDocuments() {
       try {
-        const res = await fetch('/api/v1/dashboard/summary', {
-          headers: {'Authorization': 'Bearer ' + authToken}
+        let url = `/vault/documents?category=${encodeURIComponent(currentDocCategory)}&status_filter=${encodeURIComponent(currentDocStatus)}&sort_by=${currentDocSort}`;
+        if (currentDocSearch) {
+          url += `&search=${encodeURIComponent(currentDocSearch)}`;
+        }
+        const resp = await apiRequest(url);
+        if (!resp.ok) return;
+        vaultDocuments = await resp.json();
+        renderDocumentsList();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function selectDocCategory(cat, btn) {
+      currentDocCategory = cat;
+      document.querySelectorAll('#categoryPillsRow .filter-pill').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      loadDocuments();
+    }
+
+    function handleDocSearch() {
+      currentDocSearch = document.getElementById('docSearchInput').value.trim();
+      loadDocuments();
+    }
+
+    function handleDocFilter() {
+      currentDocSort = document.getElementById('docSortSelect').value;
+      currentDocStatus = document.getElementById('docStatusSelect').value;
+      loadDocuments();
+    }
+
+    function renderDocumentsList() {
+      const container = document.getElementById('documentsListContainer');
+      if (!vaultDocuments || vaultDocuments.length === 0) {
+        container.innerHTML = `
+          <div class="card" style="text-align:center; padding:32px 16px;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-hint)" stroke-width="1.5" style="margin-bottom:8px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <div style="font-weight:700; font-size:15px; margin-bottom:4px;">No matching documents</div>
+            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">Try adjusting your filters or upload a new credential.</div>
+            <button class="btn btn-primary btn-sm" onclick="openUploadModal()">+ Upload Document</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = vaultDocuments.map(d => `
+        <div class="card" style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div style="width:42px; height:42px; border-radius:10px; background:var(--brand-tint); color:var(--brand-green); display:flex; align-items:center; justify-content:center;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div>
+                <div style="font-size:15px; font-weight:700;">${escapeHtml(d.title)}</div>
+                <div style="font-size:12px; color:var(--text-secondary);">
+                  ${d.category} &bull; <strong class="mono">${d.document_number_masked}</strong>
+                </div>
+              </div>
+            </div>
+            <div>${getStatusBadgeHtml(d.verification_status, d.is_expired, d.is_expiring_soon)}</div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-secondary); border-top:1px solid rgba(227,225,218,0.5); padding-top:8px;">
+            <span>Holder: <strong>${escapeHtml(d.holder_name)}</strong></span>
+            <span>Issue: <strong>${d.issue_date || 'N/A'}</strong></span>
+            <span>Expiry: <strong>${d.expiry_date || 'Lifetime'}</strong></span>
+          </div>
+
+          <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:2px;">
+            <button class="btn btn-secondary btn-sm" onclick="viewDocumentDetail('${d.id}')">Preview</button>
+            <button class="btn btn-secondary btn-sm" onclick="downloadDocDirect('${d.id}')">Download</button>
+            ${(d.verification_status !== 'ISSUER_VERIFIED' && d.verification_status !== 'DEMO_VERIFIED') ? `
+              <button class="btn btn-primary btn-sm" onclick="simulateVerification('${d.id}')">Verify Now</button>
+            ` : ''}
+            <button class="btn btn-secondary btn-sm" onclick="confirmDeleteDoc('${d.id}', '${escapeHtml(d.title)}')">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openUploadModal() {
+      document.getElementById('uploadDocForm').reset();
+      document.getElementById('ocrAnalysisNotice').style.display = 'none';
+      openModal('uploadModal');
+    }
+
+    async function handleFileSelected(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const notice = document.getElementById('ocrAnalysisNotice');
+      const noticeText = document.getElementById('ocrNoticeText');
+      notice.style.display = 'block';
+      noticeText.innerHTML = `Scanning document via OCR parser...`;
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const resp = await apiRequest('/vault/documents/analyze', {
+          method: 'POST',
+          body: formData
         });
-        if (res.status === 401) {
-          handleLogout();
+        if (resp.ok) {
+          const res = await resp.json();
+          document.getElementById('uploadCategory').value = res.classified_category || 'Other Documents';
+          if (res.extracted_fields) {
+            if (res.extracted_fields.holder_name) {
+              document.getElementById('uploadHolderName').value = res.extracted_fields.holder_name;
+            }
+            if (res.extracted_fields.document_number) {
+              document.getElementById('uploadDocNumber').value = res.extracted_fields.document_number;
+            }
+            if (res.extracted_fields.issue_date) {
+              document.getElementById('uploadIssueDate').value = res.extracted_fields.issue_date;
+            }
+            if (res.extracted_fields.expiry_date) {
+              document.getElementById('uploadExpiryDate').value = res.extracted_fields.expiry_date;
+            }
+          }
+          document.getElementById('uploadTitle').value = `${res.classified_category} - ${file.name.split('.')[0]}`;
+          noticeText.innerHTML = `<strong>Classified as: ${res.classified_category}</strong><br>Parsed fields filled. Confirm details below before encrypting.`;
+        }
+      } catch (err) {
+        noticeText.innerHTML = `OCR analysis unavailable. You can manually enter details below.`;
+      }
+    }
+
+    async function submitDocumentUpload(e) {
+      e.preventDefault();
+      const fileInput = document.getElementById('docFileInput');
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert('Please select a file to upload.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('category', document.getElementById('uploadCategory').value);
+      formData.append('title', document.getElementById('uploadTitle').value);
+      formData.append('holder_name', document.getElementById('uploadHolderName').value);
+      formData.append('document_number', document.getElementById('uploadDocNumber').value);
+      formData.append('issue_date', document.getElementById('uploadIssueDate').value || '');
+      formData.append('expiry_date', document.getElementById('uploadExpiryDate').value || '');
+
+      const btn = document.getElementById('btnUploadSubmit');
+      btn.disabled = true;
+      btn.innerText = 'Encrypting & Saving to Disk...';
+
+      try {
+        const resp = await apiRequest('/vault/documents/upload', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await resp.json();
+        if (!resp.ok) {
+          throw new Error(data.detail || 'Upload failed.');
+        }
+
+        closeModal('uploadModal');
+        alert(`Document '${data.title}' encrypted with AES-256-GCM and stored successfully!`);
+        await refreshAllVaultData();
+        loadDocuments();
+      } catch (err) {
+        alert(`Upload error: ${err.message}`);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Encrypt & Save to Ghost-Vault';
+      }
+    }
+
+    async function viewDocumentDetail(docId) {
+      try {
+        const resp = await apiRequest(`/vault/documents/${docId}`);
+        if (!resp.ok) return;
+        activeDocPreview = await resp.json();
+
+        document.getElementById('prevTitle').innerText = activeDocPreview.title;
+        document.getElementById('prevDocCategory').innerText = activeDocPreview.category;
+        document.getElementById('prevMaskedNum').innerText = activeDocPreview.document_number_masked;
+        document.getElementById('prevHolderName').innerText = activeDocPreview.holder_name;
+        document.getElementById('prevIssueDate').innerText = activeDocPreview.issue_date || 'N/A';
+        document.getElementById('prevExpiryDate').innerText = activeDocPreview.expiry_date || 'Lifetime (Non-Expiring)';
+        document.getElementById('prevFileSize').innerText = `${(activeDocPreview.file_size / 1024).toFixed(1)} KB (AES-256 Encrypted)`;
+        document.getElementById('prevFileHash').innerText = activeDocPreview.file_hash;
+        document.getElementById('prevVerifiedBy').innerText = activeDocPreview.verified_by || 'Unverified (Self-Uploaded)';
+        document.getElementById('prevStatusBadge').innerHTML = getStatusBadgeHtml(activeDocPreview.verification_status, activeDocPreview.is_expired, activeDocPreview.is_expiring_soon);
+
+        openModal('previewModal');
+      } catch (e) {
+        alert("Failed to load document details.");
+      }
+    }
+
+    function downloadActiveDoc() {
+      if (!activeDocPreview) return;
+      downloadDocDirect(activeDocPreview.id);
+    }
+
+    function downloadDocDirect(docId) {
+      window.open(`${API_BASE}/vault/documents/${docId}/download?access_token=${authToken}`, '_blank');
+    }
+
+    async function simulateVerification(docId) {
+      if (!confirm("Submit this document to the KavachSetu Decentralized Trust Framework for simulated cryptographic verification?")) return;
+      try {
+        const resp = await apiRequest(`/vault/documents/${docId}/verify-simulation`, { method: 'POST' });
+        const res = await resp.json();
+        if (res.status === 'VERIFIED') {
+          alert(`Document Verified Successfully!\nAttested into Ghost-Vault as Credential ${res.credential_id}.\nHyperledger Tx: ${res.fabric_tx_id}`);
+        } else {
+          alert(`Verification Result: ${res.status}\nReason: ${res.reason}`);
+        }
+        await refreshAllVaultData();
+        loadDocuments();
+      } catch (e) {
+        alert(`Verification failed: ${e.message}`);
+      }
+    }
+
+    async function confirmDeleteDoc(docId, title) {
+      if (!confirm(`Are you sure you want to permanently delete '${title}'? The encrypted file will be purged from disk.`)) return;
+      try {
+        const resp = await apiRequest(`/vault/documents/${docId}`, { method: 'DELETE' });
+        if (resp.ok) {
+          alert('Document purged successfully.');
+          await refreshAllVaultData();
+          loadDocuments();
+        }
+      } catch (e) {
+        alert('Delete failed.');
+      }
+    }
+
+    // ---------------- ZK PROOF STUDIO ----------------
+    async function loadZkStudioData() {
+      await loadVaultCredentialsForZk();
+      await loadZkProofHistory();
+    }
+
+    async function loadVaultCredentialsForZk() {
+      try {
+        const resp = await apiRequest('/vault/credentials');
+        if (!resp.ok) return;
+        vaultCredentials = await resp.json();
+
+        const select = document.getElementById('zkCredSelect');
+        if (vaultCredentials.length === 0) {
+          select.innerHTML = '<option value="">No verified credentials in vault</option>';
           return;
         }
-        const data = await res.json();
-        document.getElementById('dashGreetingName').textContent = data.user.full_name;
-        document.getElementById('dashTotalCreds').textContent = data.total_credentials;
-        document.getElementById('dashValidCreds').textContent = data.valid_credentials;
-
-        // Render recent credentials
-        const listEl = document.getElementById('dashCredentialList');
-        listEl.innerHTML = data.recent_credentials.map(c => renderCredentialCardHtml(c)).join('');
-
-        // Render recent activities
-        const actEl = document.getElementById('dashActivityList');
-        actEl.innerHTML = data.recent_activities.map(a => `
-          <div class="card" style="padding:12px; margin-bottom:8px; display:flex; align-items:center; gap:10px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--brand-green)"><circle cx="12" cy="12" r="8"/></svg>
-            <div style="flex:1;">
-              <div style="font-size:13px; font-weight:600;">${a.title}</div>
-              <div style="font-size:11px; color:var(--text-secondary);">${a.timestamp}</div>
-            </div>
-            <span class="badge badge-neutral">${a.action_type}</span>
-          </div>
+        select.innerHTML = vaultCredentials.map(c => `
+          <option value="${c.id}">${c.title} (${c.category} - ${c.id})</option>
         `).join('');
 
-      } catch (err) {
-        console.error(err);
+        onZkCredSelected();
+      } catch (e) {
+        console.error(e);
       }
     }
 
-    async function loadVaultCredentials() {
-      if (!authToken) return;
-      try {
-        const res = await fetch('/api/v1/vault/credentials', {
-          headers: {'Authorization': 'Bearer ' + authToken}
-        });
-        allCredentials = await res.json();
-        applyVaultFilter();
-      } catch (err) {
-        console.error(err);
+    function onZkCredSelected() {
+      const credId = document.getElementById('zkCredSelect').value;
+      const cred = vaultCredentials.find(c => c.id === credId);
+      const claimSelect = document.getElementById('zkClaimSelect');
+      if (cred && cred.category === 'INCOME') {
+        claimSelect.value = 'INCOME_PREDICATE_PROOF';
+      } else if (cred && cred.category === 'IDENTITY') {
+        claimSelect.value = 'AGE_RANGE_PROOF';
+      }
+      onZkClaimSelected();
+    }
+
+    function onZkClaimSelected() {
+      const claimType = document.getElementById('zkClaimSelect').value;
+      const threshGroup = document.getElementById('zkThresholdGroup');
+      const threshLabel = document.getElementById('zkThresholdLabel');
+      const threshInput = document.getElementById('zkThresholdInput');
+
+      const pubList = document.getElementById('zkPublicDisclosureList');
+      const privList = document.getElementById('zkPrivateKeptList');
+
+      if (claimType === 'AGE_RANGE_PROOF') {
+        threshGroup.style.display = 'block';
+        threshLabel.innerText = '3. Minimum Age Threshold (Years)';
+        threshInput.value = 18;
+        pubList.innerHTML = `
+          <li>Predicate: Citizen Age &ge; 18 Verified True</li>
+          <li>BN254 Group Commitment (C)</li>
+          <li>Fiat-Shamir Non-Interactive Challenge</li>
+          <li>Zero Date of Birth exposure</li>
+        `;
+        privList.innerHTML = `
+          <li>Exact Birth Date (14 May 1998)</li>
+          <li>Age difference delta (&delta;)</li>
+          <li>National ID Number</li>
+          <li>Private witness blinding factors</li>
+        `;
+      } else if (claimType === 'INCOME_PREDICATE_PROOF') {
+        threshGroup.style.display = 'block';
+        threshLabel.innerText = '3. Monthly Income Threshold (INR)';
+        threshInput.value = 25000;
+        pubList.innerHTML = `
+          <li>Predicate: Monthly Income &ge; ₹25,000 Verified True</li>
+          <li>Decoupled Pedersen Range Commitment</li>
+          <li>Cryptographic Schnorr group proof</li>
+          <li>Zero raw bank statement exposure</li>
+        `;
+        privList.innerHTML = `
+          <li>Exact Monthly Income (₹35,000)</li>
+          <li>Bank account balance & statement</li>
+          <li>Employer details & account number</li>
+          <li>Transaction history</li>
+        `;
+      } else {
+        threshGroup.style.display = 'none';
+        pubList.innerHTML = `
+          <li>Proof of Valid Credential Possession</li>
+          <li>Digital Trust Framework Attestation</li>
+          <li>Public signature digest</li>
+        `;
+        privList.innerHTML = `
+          <li>Document raw fingerprint</li>
+          <li>Citizen private signing keys</li>
+          <li>Personal identifying numbers</li>
+        `;
       }
     }
 
-    function filterVault(category, btn) {
-      currentCategoryFilter = category;
-      document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      applyVaultFilter();
-    }
+    async function generateZkProof() {
+      const credId = document.getElementById('zkCredSelect').value;
+      const claimType = document.getElementById('zkClaimSelect').value;
+      const thresh = parseInt(document.getElementById('zkThresholdInput').value) || 18;
+      const btn = document.getElementById('btnGenerateProof');
 
-    function applyVaultFilter() {
-      const container = document.getElementById('vaultCardsContainer');
-      const filtered = currentCategoryFilter === 'ALL'
-        ? allCredentials
-        : allCredentials.filter(c => c.category === currentCategoryFilter);
-
-      if (filtered.length === 0) {
-        container.innerHTML = '<div class="card" style="text-align:center; padding:30px; color:var(--text-secondary);">No credentials in this category.</div>';
+      if (!credId) {
+        alert("Please select a verified credential first.");
         return;
       }
-      container.innerHTML = filtered.map(c => renderCredentialCardHtml(c)).join('');
+
+      btn.disabled = true;
+      btn.innerText = 'Calculating Witness & Proving on BN254...';
+
+      try {
+        const resp = await apiRequest('/zk/generate', {
+          method: 'POST',
+          body: JSON.stringify({
+            credential_id: credId,
+            claim_type: claimType,
+            threshold_value: thresh
+          })
+        });
+        const res = await resp.json();
+        if (!resp.ok) throw new Error(res.detail || "Proof generation failed.");
+
+        activeZkProof = res;
+        displayActiveProofResult(res);
+        await loadZkProofHistory();
+      } catch (err) {
+        alert(`ZK Prover error: ${err.message}`);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Generate Cryptographic ZK Proof';
+      }
     }
 
-    function renderCredentialCardHtml(c) {
-      let icon = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>';
-      if (c.category === 'INCOME') {
-        icon = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>';
-      } else if (c.category === 'IDENTITY') {
-        icon = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5S9.5 10.38 9.5 9s1.12-2.5 2.5-2.5zM4 17.5c0-2.33 4-3.5 8-3.5s8 1.17 8 3.5V18H4v-.5z"/></svg>';
+    function displayActiveProofResult(proof) {
+      const card = document.getElementById('zkProofResultCard');
+      card.style.display = 'block';
+      document.getElementById('zkResultProofId').innerText = proof.id;
+      document.getElementById('zkResultClaim').innerText = proof.claim_statement;
+      document.getElementById('zkResultCommitment').innerText = proof.commitment.slice(0, 24) + '...';
+      document.getElementById('zkResultChallenge').innerText = proof.proof_data.challenge_e.slice(0, 24) + '...';
+      document.getElementById('zkVerificationVerdict').style.display = 'none';
+      card.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function verifyActiveProof() {
+      if (!activeZkProof) return;
+      const verdict = document.getElementById('zkVerificationVerdict');
+      verdict.style.display = 'block';
+      verdict.innerHTML = 'Verifying cryptographic group equation g^sv * h^sr == T * C^e mod P...';
+
+      try {
+        const resp = await apiRequest('/zk/verify', {
+          method: 'POST',
+          body: JSON.stringify({ proof_id: activeZkProof.id })
+        });
+        const res = await resp.json();
+        if (res.is_valid) {
+          verdict.innerHTML = `<span style="color:var(--success); font-weight:700;">&check; MATHEMATICALLY VERIFIED VALID!</span><br>${res.explanation}`;
+        } else {
+          verdict.innerHTML = `<span style="color:var(--danger); font-weight:700;">&cross; VERIFICATION FAILED:</span><br>${res.explanation}`;
+        }
+      } catch (e) {
+        verdict.innerHTML = `<span style="color:var(--danger);">Error: ${e.message}</span>`;
+      }
+    }
+
+    function shareActiveProof() {
+      if (!activeZkProof) return;
+      switchTab('sharing');
+      document.getElementById('shareTypeSelect').value = 'ZK_PROOF';
+      onShareTypeChanged();
+      document.getElementById('sharePurposeInput').value = activeZkProof.claim_statement;
+    }
+
+    async function loadZkProofHistory() {
+      try {
+        const resp = await apiRequest('/zk/proofs');
+        if (!resp.ok) return;
+        const proofs = await resp.json();
+        const container = document.getElementById('zkProofHistoryContainer');
+        if (proofs.length === 0) {
+          container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-hint); font-size:13px;">No ZK proofs generated yet.</div>`;
+          return;
+        }
+        container.innerHTML = proofs.map(p => `
+          <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:14px; font-weight:700;">${escapeHtml(p.claim_statement)}</div>
+              <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">
+                <span class="mono">${p.id}</span> &bull; ${p.created_at}
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="badge badge-success">&check; VALID</span>
+              <button class="btn btn-secondary btn-sm" onclick="verifyProofById('${p.id}')">Verify</button>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function verifyProofById(proofId) {
+      try {
+        const resp = await apiRequest('/zk/verify', {
+          method: 'POST',
+          body: JSON.stringify({ proof_id: proofId })
+        });
+        const res = await resp.json();
+        alert(`Cryptographic Verification Result for ${proofId}:\n${res.verification_result}\n\n${res.explanation}`);
+      } catch (e) {
+        alert(`Verification error: ${e.message}`);
+      }
+    }
+
+    // ---------------- CONSENT & PERMISSIONS ----------------
+    async function loadConsentRequests() {
+      try {
+        const resp = await apiRequest('/consent/requests');
+        if (!resp.ok) return;
+        const requests = await resp.json();
+
+        const incoming = requests.filter(r => r.status === 'PENDING');
+        const active = requests.filter(r => r.status === 'ACTIVE');
+        const history = requests.filter(r => r.status !== 'PENDING' && r.status !== 'ACTIVE');
+
+        renderIncomingRequests(incoming);
+        renderActivePermissions(active);
+        renderConsentHistory(history);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderIncomingRequests(reqs) {
+      const container = document.getElementById('incomingRequestsContainer');
+      if (reqs.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-hint); font-size:13px;">No pending access requests. Tap "+ Trigger Demo Request" above to test.</div>`;
+        return;
+      }
+      container.innerHTML = reqs.map(r => `
+        <div class="card" style="border-left: 4px solid var(--warning);">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <div style="font-size:15px; font-weight:700;">${escapeHtml(r.institution_name)}</div>
+              <div style="font-size:12px; color:var(--text-secondary);">${r.institution_category} &bull; Received ${r.created_at}</div>
+            </div>
+            <span class="badge badge-warning">REQUIRES APPROVAL</span>
+          </div>
+
+          <div style="margin:10px 0; background:var(--card-subtle); padding:10px 12px; border-radius:10px; font-size:12px;">
+            <div><strong>Purpose:</strong> ${escapeHtml(r.purpose)}</div>
+            <div style="margin-top:4px;"><strong>Requested Predicate:</strong> <span style="color:var(--brand-green); font-weight:600;">${escapeHtml(r.requested_claim)}</span></div>
+          </div>
+
+          <div style="display:flex; gap:8px; justify-content:flex-end;">
+            <button class="btn btn-secondary btn-sm" onclick="handleConsentAction('${r.id}', 'REJECT')">Reject</button>
+            <button class="btn btn-primary btn-sm" onclick="handleConsentAction('${r.id}', 'APPROVE')">Approve (24 Hours)</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderActivePermissions(reqs) {
+      const container = document.getElementById('activePermissionsContainer');
+      if (reqs.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-hint); font-size:13px;">No active permissions currently granted.</div>`;
+        return;
+      }
+      container.innerHTML = reqs.map(r => `
+        <div class="card" style="border-left: 4px solid var(--success);">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div>
+              <div style="font-size:15px; font-weight:700;">${escapeHtml(r.institution_name)}</div>
+              <div style="font-size:12px; color:var(--text-secondary);">Granted: ${escapeHtml(r.requested_claim)}</div>
+            </div>
+            <span class="badge badge-success">ACTIVE ACCESS</span>
+          </div>
+          <div style="font-size:11px; color:var(--text-secondary); margin-top:8px;">
+            Expires on: <strong>${r.expires_at || 'In 24h'}</strong>
+          </div>
+          <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+            <button class="btn btn-danger btn-sm" onclick="handleConsentAction('${r.id}', 'REVOKE')">Revoke Future Access</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderConsentHistory(reqs) {
+      const container = document.getElementById('historicalConsentContainer');
+      if (reqs.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-hint); font-size:13px;">No past permission records.</div>`;
+        return;
+      }
+      container.innerHTML = reqs.map(r => `
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:14px; font-weight:600;">${escapeHtml(r.institution_name)}</div>
+            <div style="font-size:11px; color:var(--text-secondary);">${escapeHtml(r.purpose)} &bull; ${r.created_at}</div>
+          </div>
+          <span class="badge ${r.status === 'REVOKED' ? 'badge-danger' : (r.status === 'EXPIRED' ? 'badge-neutral' : 'badge-danger')}">${r.status}</span>
+        </div>
+      `).join('');
+    }
+
+    async function handleConsentAction(reqId, action) {
+      try {
+        const resp = await apiRequest(`/consent/requests/${reqId}/action`, {
+          method: 'POST',
+          body: JSON.stringify({ action: action, duration_hours: 24 })
+        });
+        if (resp.ok) {
+          alert(`Consent request ${action.toLowerCase()}ed successfully.`);
+          await loadConsentRequests();
+          await refreshAllVaultData();
+        }
+      } catch (e) {
+        alert(`Action failed: ${e.message}`);
+      }
+    }
+
+    async function triggerDemoConsentRequest() {
+      try {
+        const resp = await apiRequest('/consent/create-demo', { method: 'POST' });
+        if (resp.ok) {
+          await loadConsentRequests();
+          await refreshAllVaultData();
+          alert("Demo consent request created from State Bank of India!");
+        }
+      } catch (e) {
+        alert("Failed to create demo request.");
+      }
+    }
+
+    // ---------------- SECURE SHARING & QR ----------------
+    async function loadSharingData() {
+      onShareTypeChanged();
+      await loadSharedLinks();
+    }
+
+    function onShareTypeChanged() {
+      const shareType = document.getElementById('shareTypeSelect').value;
+      const targetSelect = document.getElementById('shareTargetSelect');
+      const targetLabel = document.getElementById('shareTargetLabel');
+
+      if (shareType === 'ZK_PROOF') {
+        targetLabel.innerText = 'Select ZK Proof to Share';
+        targetSelect.innerHTML = (activeZkProof ? `<option value="${activeZkProof.id}">${activeZkProof.claim_statement}</option>` : '') +
+          `<option value="LATEST_AGE">Age Proof: Citizen Age >= 18 Years</option>
+           <option value="LATEST_INC">Income Proof: Monthly Income >= ₹25,000</option>`;
+      } else {
+        targetLabel.innerText = 'Select Document Projection to Share';
+        targetSelect.innerHTML = vaultDocuments.map(d => `
+          <option value="${d.id}">${d.title} (${d.category})</option>
+        `).join('');
+      }
+    }
+
+    async function createShareLink() {
+      const shareType = document.getElementById('shareTypeSelect').value;
+      const targetId = document.getElementById('shareTargetSelect').value;
+      const purpose = document.getElementById('sharePurposeInput').value.trim() || 'Verification';
+      const recipient = document.getElementById('shareRecipientInput').value.trim() || 'Authorized Verifier';
+      const expiry = parseInt(document.getElementById('shareExpirySelect').value) || 24;
+      const maxUses = parseInt(document.getElementById('shareMaxUsesSelect').value) || 5;
+
+      const payload = {
+        share_type: shareType,
+        title: shareType === 'ZK_PROOF' ? 'Zero-Knowledge Cryptographic Proof' : 'Masked Document Projection',
+        purpose: purpose,
+        recipient_info: recipient,
+        expiry_hours: expiry,
+        max_uses: maxUses
+      };
+
+      if (shareType === 'ZK_PROOF') {
+        payload.zk_proof_id = (activeZkProof ? activeZkProof.id : null);
+      } else {
+        payload.document_id = targetId;
       }
 
-      return `
-        <div class="card card-clickable" onclick="openCredentialDetail('${c.id}')">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-            <div style="width:40px; height:40px; background:var(--brand-tint); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--brand-green);">
-              ${icon}
-            </div>
-            <div style="flex:1;">
-              <div style="font-size:15px; font-weight:700;">${c.title}</div>
-              <div style="font-size:11px; color:var(--text-secondary);">${c.issuer}</div>
-            </div>
-            <span class="badge badge-success">${c.status}</span>
-          </div>
-          <div style="border-top:1px solid var(--border); padding-top:10px; display:flex; justify-content:space-between; font-size:11px;">
-            <div>
-              <span style="color:var(--text-hint);">CREDENTIAL ID:</span>
-              <span class="mono" style="font-weight:600; margin-left:4px;">${c.id}</span>
-            </div>
-            <div>
-              <span style="color:var(--text-hint);">VALID THRU:</span>
-              <span style="font-weight:600; margin-left:4px;">${c.expiry_date}</span>
-            </div>
-          </div>
-          ${c.is_synthetic ? `
-            <div style="margin-top:8px; background:var(--card-subtle); padding:4px 8px; border-radius:6px; font-size:10px; color:var(--text-secondary); display:flex; align-items:center; gap:4px;">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-              Synthetic Demo Credential • Non-Governmental
-            </div>
-          ` : ''}
-        </div>
-      `;
+      try {
+        const resp = await apiRequest('/share/create', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        const res = await resp.json();
+        if (resp.ok) {
+          alert(`Secure Share Link created!\nURL: ${res.share_url}`);
+          await loadSharedLinks();
+        } else {
+          alert(`Share creation failed: ${res.detail}`);
+        }
+      } catch (e) {
+        alert(`Error: ${e.message}`);
+      }
     }
 
-    async function openCredentialDetail(id) {
-      if (!authToken) return;
+    async function loadSharedLinks() {
       try {
-        const res = await fetch('/api/v1/vault/credentials/' + id, {
-          headers: {'Authorization': 'Bearer ' + authToken}
-        });
-        const cred = await res.json();
+        const resp = await apiRequest('/share/links');
+        if (!resp.ok) return;
+        const links = await resp.json();
+        const container = document.getElementById('shareLinksContainer');
+        if (links.length === 0) {
+          container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-hint); font-size:13px;">No active shared links.</div>`;
+          return;
+        }
+        container.innerHTML = links.map(l => `
+          <div class="card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div style="background:white; padding:4px; border:1px solid var(--border); border-radius:8px;">
+                ${l.qr_svg || ''}
+              </div>
+              <div>
+                <div style="font-size:14px; font-weight:700;">${escapeHtml(l.title)}</div>
+                <div style="font-size:12px; color:var(--text-secondary);">For: <strong>${escapeHtml(l.recipient_info)}</strong> &bull; ${escapeHtml(l.purpose)}</div>
+                <div style="font-size:11px; color:var(--text-hint); margin-top:4px;">
+                  Expires: ${l.expires_at} &bull; Uses: ${l.use_count}/${l.max_uses}
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-secondary btn-sm" onclick="copyShareUrl('${l.share_url}')">Copy Link</button>
+              ${l.status === 'ACTIVE' ? `
+                <button class="btn btn-danger btn-sm" onclick="revokeShareLink('${l.id}')">Revoke</button>
+              ` : `<span class="badge badge-neutral">${l.status}</span>`}
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    }
 
-        let safeAttrsHtml = '';
-        if (cred.safe_attributes) {
-          safeAttrsHtml = Object.entries(cred.safe_attributes).map(([k, v]) => `
-            <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border); font-size:13px;">
-              <span style="color:var(--text-secondary); text-transform:capitalize;">${k.replace(/_/g, ' ')}</span>
-              <span style="font-weight:700; color:var(--brand-green);">${v}</span>
+    function copyShareUrl(url) {
+      navigator.clipboard.writeText(url);
+      alert('Secure sharing link copied to clipboard!');
+    }
+
+    async function revokeShareLink(shareId) {
+      if (!confirm("Revoke this share link immediately? Any further attempts to use this URL will be blocked.")) return;
+      try {
+        const resp = await apiRequest(`/share/links/${shareId}/revoke`, { method: 'POST' });
+        if (resp.ok) {
+          alert('Link revoked successfully.');
+          await loadSharedLinks();
+        }
+      } catch (e) {
+        alert("Revocation failed.");
+      }
+    }
+
+    // ---------------- BLOCKCHAIN AUDIT EXPLORER ----------------
+    async function loadBlockchainData() {
+      try {
+        const resp = await apiRequest('/blockchain/explorer');
+        if (!resp.ok) return;
+        const data = await resp.json();
+
+        document.getElementById('fabricTotalBlocks').innerText = data.network.total_blocks;
+        document.getElementById('fabricTotalTxs').innerText = data.network.total_transactions;
+
+        renderFabricBlocks(data.recent_blocks || []);
+        renderFabricTxs(data.recent_transactions || []);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderFabricBlocks(blocks) {
+      const container = document.getElementById('fabricBlocksContainer');
+      if (blocks.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-hint); font-size:13px;">No blocks on channel.</div>`;
+        return;
+      }
+      container.innerHTML = blocks.map(b => `
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="badge badge-success">BLOCK #${b.block_number}</span>
+              <span class="mono" style="font-size:12px; font-weight:700;">${b.block_hash.slice(0, 18)}...</span>
+            </div>
+            <div style="font-size:11px; color:var(--text-secondary); margin-top:4px;">
+              Merkle Root: <span class="mono">${b.merkle_root.slice(0, 16)}...</span> &bull; Transactions: <strong>${b.tx_count}</strong>
+            </div>
+          </div>
+          <div style="font-size:11px; color:var(--text-hint);">${b.timestamp}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderFabricTxs(txs) {
+      const container = document.getElementById('fabricTxsContainer');
+      if (txs.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-hint); font-size:13px;">No transactions found.</div>`;
+        return;
+      }
+      container.innerHTML = txs.map(t => `
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:13px; font-weight:700;">${escapeHtml(t.title)}</div>
+            <div style="font-size:11px; color:var(--text-secondary);">
+              <span class="mono">${t.tx_id}</span> &bull; ${t.institution}
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge badge-success">&check; CONFIRMED</span>
+            <div style="font-size:10px; color:var(--text-hint); margin-top:2px;">${t.timestamp}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function verifyBlockchainChain() {
+      const box = document.getElementById('chainIntegrityBox');
+      box.style.display = 'block';
+      box.style.background = '#ECFDF5';
+      box.style.color = '#065F46';
+      box.innerText = 'Traversing Merkle hashes from Genesis Block #0...';
+
+      try {
+        const resp = await apiRequest('/blockchain/verify-chain');
+        const res = await resp.json();
+        if (res.valid) {
+          box.innerHTML = `&check; ${res.chain_integrity}<br>All ${res.total_blocks_verified} blocks cryptographically linked and verified with zero discrepancies.`;
+        } else {
+          box.style.background = '#FEF2F2';
+          box.style.color = '#991B1B';
+          box.innerText = `Chain broken at Block #${res.broken_at_block}: ${res.error}`;
+        }
+      } catch (e) {
+        box.innerText = `Verification error: ${e.message}`;
+      }
+    }
+
+    // ---------------- PROFILE & SECURITY ----------------
+    async function loadProfileData() {
+      if (!currentUser) return;
+      document.getElementById('profFullName').innerText = currentUser.full_name;
+      document.getElementById('profEmail').innerText = currentUser.email;
+      document.getElementById('profUserCode').innerText = currentUser.user_code;
+      document.getElementById('profPhone').innerText = currentUser.phone_masked || '+91 ••••• ••421';
+      document.getElementById('profDob').innerText = currentUser.date_of_birth || '14 May 1998';
+      document.getElementById('profAddress').innerText = currentUser.address_masked || 'Bandra West, Mumbai';
+    }
+
+    function openEditProfileModal() {
+      if (!currentUser) return;
+      document.getElementById('editFullName').value = currentUser.full_name;
+      document.getElementById('editPhone').value = currentUser.phone_masked || '+91 ••••• ••421';
+      document.getElementById('editDob').value = currentUser.date_of_birth || '1998-05-14';
+      document.getElementById('editAddress').value = currentUser.address_masked || 'Bandra West, Mumbai';
+      openModal('editProfileModal');
+    }
+
+    async function handleProfileUpdateSubmit(e) {
+      e.preventDefault();
+      try {
+        const resp = await apiRequest('/settings/profile', {
+          method: 'PUT',
+          body: JSON.stringify({
+            full_name: document.getElementById('editFullName').value,
+            phone_masked: document.getElementById('editPhone').value,
+            date_of_birth: document.getElementById('editDob').value,
+            address_masked: document.getElementById('editAddress').value
+          })
+        });
+        if (resp.ok) {
+          currentUser = await resp.json();
+          closeModal('editProfileModal');
+          await loadProfileData();
+          await refreshAllVaultData();
+          alert('Profile updated successfully.');
+        }
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    function openChangePasswordModal() {
+      document.getElementById('oldPasswordInput').value = '';
+      document.getElementById('newPasswordInput').value = '';
+      openModal('changePasswordModal');
+    }
+
+    async function handleChangePasswordSubmit(e) {
+      e.preventDefault();
+      const old_password = document.getElementById('oldPasswordInput').value;
+      const new_password = document.getElementById('newPasswordInput').value;
+
+      try {
+        const resp = await apiRequest('/settings/change-password', {
+          method: 'POST',
+          body: JSON.stringify({ old_password, new_password })
+        });
+        const res = await resp.json();
+        if (resp.ok) {
+          closeModal('changePasswordModal');
+          alert('Password updated with 12 adaptive bcrypt rounds!');
+        } else {
+          alert(res.detail || 'Password update failed.');
+        }
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function openRecoveryKeyModal() {
+      try {
+        const resp = await apiRequest('/settings/recovery-key');
+        if (!resp.ok) return;
+        const res = await resp.json();
+        const words = res.mnemonic_phrase.split(' ');
+        const container = document.getElementById('seedWordsContainer');
+        container.innerHTML = words.map((w, idx) => `
+          <div style="background:var(--card-subtle); border:1px solid var(--border); border-radius:8px; padding:6px 10px; font-size:12px; font-weight:600;">
+            <span style="color:var(--text-hint);">${idx + 1}.</span> ${w}
+          </div>
+        `).join('');
+        openModal('recoveryModal');
+      } catch (e) {
+        alert('Could not fetch recovery key.');
+      }
+    }
+
+    async function exportEncryptedBackup() {
+      const pass = prompt("Enter an encryption passphrase to lock your backup archive:", "GhostProtocol@2026");
+      if (!pass) return;
+
+      try {
+        const resp = await apiRequest(`/settings/backup/export?passphrase=${encodeURIComponent(pass)}`, {
+          method: 'POST'
+        });
+        const res = await resp.json();
+        if (resp.ok) {
+          const blob = new Blob([JSON.stringify(res.backup_archive, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `kavachsetu_vault_backup_${new Date().toISOString().slice(0,10)}.json`;
+          a.click();
+          alert(`Encrypted backup archive created successfully!\nChecksum (SHA-256): ${res.checksum}`);
+        }
+      } catch (e) {
+        alert(`Backup export failed: ${e.message}`);
+      }
+    }
+
+    function openRestoreModal() {
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = '.json';
+      fileInput.onchange = async (ev) => {
+        const file = ev.target.files[0];
+        if (!file) return;
+        const text = await file.text();
+        try {
+          const archive = JSON.parse(text);
+          const pass = prompt("Enter your backup decryption passphrase:");
+          if (!pass) return;
+
+          const resp = await apiRequest('/settings/backup/restore', {
+            method: 'POST',
+            body: JSON.stringify({ backup_archive: archive, passphrase: pass })
+          });
+          const res = await resp.json();
+          if (resp.ok) {
+            alert(res.message);
+            await refreshAllVaultData();
+          } else {
+            alert(`Restore error: ${res.detail}`);
+          }
+        } catch (e) {
+          alert(`Invalid backup JSON: ${e.message}`);
+        }
+      };
+      fileInput.click();
+    }
+
+    // ---------------- NOTIFICATIONS ----------------
+    async function checkUnreadNotifications() {
+      try {
+        const resp = await apiRequest('/notifications');
+        if (!resp.ok) return;
+        const notifs = await resp.json();
+        const unread = notifs.filter(n => !n.is_read).length;
+        const dot = document.getElementById('headerNotifDot');
+        if (unread > 0) {
+          dot.style.display = 'block';
+        } else {
+          dot.style.display = 'none';
+        }
+      } catch (e) {}
+    }
+
+    async function openNotificationsModal() {
+      try {
+        const resp = await apiRequest('/notifications');
+        if (!resp.ok) return;
+        const notifs = await resp.json();
+        const list = document.getElementById('notificationsList');
+        if (notifs.length === 0) {
+          list.innerHTML = `<div style="text-align:center; color:var(--text-hint); font-size:13px; padding:20px;">No notifications.</div>`;
+        } else {
+          list.innerHTML = notifs.map(n => `
+            <div class="card" style="margin-bottom:8px; padding:12px; ${!n.is_read ? 'border-left:3px solid var(--brand-green); background:var(--brand-tint);' : ''}">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong style="font-size:13px;">${escapeHtml(n.title)}</strong>
+                <span style="font-size:10px; color:var(--text-hint);">${n.created_at}</span>
+              </div>
+              <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">${escapeHtml(n.message)}</div>
             </div>
           `).join('');
         }
-
-        const detailHtml = `
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-              <span class="badge badge-info">${cred.category}</span>
-              <span class="badge badge-success">${cred.status}</span>
-            </div>
-            <h2 style="font-size:20px; font-weight:700; margin-bottom:4px;">${cred.title}</h2>
-            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">Issued by ${cred.issuer}</div>
-            <div style="border-top:1px solid var(--border); padding-top:10px; display:flex; flex-direction:column; gap:8px; font-size:12px;">
-              <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Credential ID</span><span class="mono" style="font-weight:600;">${cred.id}</span></div>
-              <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Issue Date</span><span style="font-weight:600;">${cred.issue_date}</span></div>
-              <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-secondary);">Expiry Date</span><span style="font-weight:600;">${cred.expiry_date}</span></div>
-            </div>
-          </div>
-
-          <div class="info-banner warning" style="margin-bottom:16px;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--warning)" style="flex-shrink:0;"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
-            <div>
-              <strong>Synthetic Demo Credential</strong><br>
-              ${cred.privacy_notice}
-            </div>
-          </div>
-
-          <h3 style="font-size:14px; font-weight:600; margin-bottom:8px;">Zero-Exposure Verified Attributes</h3>
-          <div class="card" style="margin-bottom:16px;">
-            ${safeAttrsHtml}
-          </div>
-
-          <h3 style="font-size:14px; font-weight:600; margin-bottom:8px;">Cryptographic Fingerprint</h3>
-          <div class="card" style="background:var(--card-subtle);">
-            <div style="font-size:11px; color:var(--text-secondary); margin-bottom:4px;">SHA-256 Digest Signature</div>
-            <div class="mono" style="font-size:11px; word-break:break-all; color:var(--text-primary);">${cred.verification_hash || 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}</div>
-          </div>
-        `;
-
-        document.getElementById('credentialDetailContent').innerHTML = detailHtml;
-        showScreen('screenCredentialDetail');
-      } catch (err) {
-        console.error(err);
+        openModal('notifModal');
+      } catch (e) {
+        alert("Failed to load notifications.");
       }
     }
 
-    async function loadActivityLog() {
-      if (!authToken) return;
+    async function markAllNotificationsRead() {
       try {
-        const res = await fetch('/api/v1/activity', {
-          headers: {'Authorization': 'Bearer ' + authToken}
-        });
-        const activities = await res.json();
-        const container = document.getElementById('activityContainer');
-
-        if (activities.length === 0) {
-          container.innerHTML = '<div class="card" style="text-align:center; padding:30px; color:var(--text-secondary);">No activities recorded.</div>';
-          return;
-        }
-
-        container.innerHTML = activities.map(a => `
-          <div class="card" style="margin-bottom:10px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-              <span style="font-size:14px; font-weight:700;">${a.title}</span>
-              <span class="badge ${a.action_type === 'LOGIN' ? 'badge-success' : a.action_type === 'VIEW_CREDENTIAL' ? 'badge-info' : 'badge-neutral'}">${a.action_type}</span>
-            </div>
-            ${a.description ? `<div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px;">${a.description}</div>` : ''}
-            <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-hint);">
-              <span>${a.timestamp}</span>
-              <span class="mono">${a.ip_masked}</span>
-            </div>
-          </div>
-        `).join('');
-
-      } catch (err) {
-        console.error(err);
-      }
+        await apiRequest('/notifications/read-all', { method: 'POST' });
+        await openNotificationsModal();
+        await checkUnreadNotifications();
+      } catch (e) {}
     }
 
-    function refreshData() {
-      loadDashboard();
+    function openSecurityModal() {
+      openModal('securityModal');
     }
 
-    // Auto-init
-    if (authToken && currentUser) {
-      navigateToTab('dashboard');
-    } else {
-      showScreen('screenSplash');
+    // Utility: XSS escape
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
   </script>
 </body>
 </html>
-

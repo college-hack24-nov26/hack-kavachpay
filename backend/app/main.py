@@ -5,12 +5,15 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from backend.app.core.config import settings
 from backend.app.db.init_db import init_db
-from backend.app.api.v1.endpoints import auth, vault, activity, dashboard, settings as settings_endpoint
+from backend.app.api.v1.endpoints import (
+    auth, vault, zk, consent, share, blockchain, notifications,
+    activity, dashboard, settings as settings_endpoint
+)
 
 app = FastAPI(
     title=settings.APP_NAME,
     description="Privacy-first digital trust and financial verification platform. Prove, Don't Share.",
-    version="1.0.0-stage1"
+    version="2.0.0-production-vault"
 )
 
 # CORS configuration
@@ -27,9 +30,14 @@ app.add_middleware(
 def on_startup():
     init_db()
 
-# Include API v1 routers
+# Include API routers
 app.include_router(auth.router, prefix=settings.API_V1_STR)
 app.include_router(vault.router, prefix=settings.API_V1_STR)
+app.include_router(zk.router, prefix=settings.API_V1_STR)
+app.include_router(consent.router, prefix=settings.API_V1_STR)
+app.include_router(share.router, prefix=settings.API_V1_STR)
+app.include_router(blockchain.router, prefix=settings.API_V1_STR)
+app.include_router(notifications.router, prefix=settings.API_V1_STR)
 app.include_router(activity.router, prefix=settings.API_V1_STR)
 app.include_router(dashboard.router, prefix=settings.API_V1_STR)
 app.include_router(settings_endpoint.router, prefix=settings.API_V1_STR)
@@ -48,7 +56,7 @@ def serve_index():
         "app": settings.APP_NAME,
         "tagline": settings.APP_TAGLINE,
         "status": "RUNNING",
-        "stage": "Stage 1: Application Foundation",
+        "version": "2.0.0-production-vault",
         "api_docs": "/docs"
     }
 
@@ -57,6 +65,6 @@ def health_check():
     return {
         "status": "healthy",
         "app": settings.APP_NAME,
-        "version": "1.0.0-stage1"
+        "version": "2.0.0-production-vault",
+        "security": "AES-256-GCM + BN254 ZK-SNARK Engine + Hyperledger Fabric 'kavach-channel'"
     }
-
